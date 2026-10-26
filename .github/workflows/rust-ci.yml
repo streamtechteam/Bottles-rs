@@ -1,0 +1,68 @@
+name: Rust rewrite CI
+
+on:
+  push:
+    branches:
+      - arena/55ea25b9-bottles-rs
+    paths:
+      - "rust/**"
+      - "bottles/backend/models/config.py"
+      - "bottles/frontend/cli/cli.py"
+      - "bottles/frontend/ui/**"
+      - "data/com.usebottles.bottles.gschema.xml"
+      - ".github/workflows/rust-ci.yml"
+  pull_request:
+    paths:
+      - "rust/**"
+      - "bottles/backend/models/config.py"
+      - "bottles/frontend/cli/cli.py"
+      - "bottles/frontend/ui/**"
+      - "data/com.usebottles.bottles.gschema.xml"
+      - ".github/workflows/rust-ci.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install native GUI build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            pkg-config \
+            libx11-dev \
+            libxcb1-dev \
+            libxcursor-dev \
+            libxi-dev \
+            libxrandr-dev \
+            libxinerama-dev \
+            libxkbcommon-dev \
+            libwayland-dev \
+            libgl1-mesa-dev \
+            libudev-dev
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: rust
+      - name: Verify generated contracts
+        run: |
+          python3 rust/scripts/generate_contracts.py --check
+          python3 rust/scripts/generate_parity_report.py --check
+      - name: Format
+        working-directory: rust
+        run: cargo fmt --all -- --check
+      - name: Clippy
+        working-directory: rust
+        run: cargo clippy --workspace --all-targets
+      - name: Core and CLI tests
+        working-directory: rust
+        run: cargo test -p bottles-core -p bottles-cli
+      - name: Check egui application
+        working-directory: rust
+        run: cargo check -p bottles-gui --all-targets

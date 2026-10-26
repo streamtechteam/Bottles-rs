@@ -1,0 +1,953 @@
+{
+  "source": "bottles/frontend/cli/cli.py",
+  "commands": [
+    {
+      "name": "info",
+      "help": "Show information about Bottles",
+      "arguments": [
+        {
+          "flags": [
+            "type"
+          ],
+          "all_flags": [
+            "type"
+          ],
+          "choices": [
+            "bottles-path",
+            "health-check"
+          ],
+          "help": "Type of information",
+          "required": false
+        }
+      ],
+      "status": "ported"
+    },
+    {
+      "name": "list",
+      "help": "List entities",
+      "arguments": [
+        {
+          "flags": [
+            "type"
+          ],
+          "all_flags": [
+            "type"
+          ],
+          "choices": [
+            "bottles",
+            "components"
+          ],
+          "help": "Type of entity",
+          "required": false
+        },
+        {
+          "flags": [
+            "-f"
+          ],
+          "all_flags": [
+            "-f",
+            "--filter"
+          ],
+          "choices": [],
+          "help": "Filter bottles and components (e.g. '-f 'environment:gaming')",
+          "required": false
+        }
+      ],
+      "status": "ported"
+    },
+    {
+      "name": "programs",
+      "help": "List programs",
+      "arguments": [
+        {
+          "flags": [
+            "-b"
+          ],
+          "all_flags": [
+            "-b",
+            "--bottle"
+          ],
+          "choices": [],
+          "help": "Bottle name",
+          "required": true
+        }
+      ],
+      "status": "ported"
+    },
+    {
+      "name": "add",
+      "help": "Add program",
+      "arguments": [
+        {
+          "flags": [
+            "-b"
+          ],
+          "all_flags": [
+            "-b",
+            "--bottle"
+          ],
+          "choices": [],
+          "help": "Bottle name",
+          "required": true
+        },
+        {
+          "flags": [
+            "-n"
+          ],
+          "all_flags": [
+            "-n",
+            "--name"
+          ],
+          "choices": [],
+          "help": "Program name",
+          "required": true
+        },
+        {
+          "flags": [
+            "-p"
+          ],
+          "all_flags": [
+            "-p",
+            "--path"
+          ],
+          "choices": [],
+          "help": "Program path",
+          "required": true
+        },
+        {
+          "flags": [
+            "-l"
+          ],
+          "all_flags": [
+            "-l",
+            "--launch-options"
+          ],
+          "choices": [],
+          "help": "Program launch options",
+          "required": false
+        },
+        {
+          "flags": [
+            "--no-d7vk"
+          ],
+          "all_flags": [
+            "--no-d7vk"
+          ],
+          "choices": [],
+          "help": "Disable D7VK for the program",
+          "required": false
+        },
+        {
+          "flags": [
+            "--no-dxvk"
+          ],
+          "all_flags": [
+            "--no-dxvk"
+          ],
+          "choices": [],
+          "help": "Disable DXVK for the program",
+          "required": false
+        },
+        {
+          "flags": [
+            "--no-vkd3d"
+          ],
+          "all_flags": [
+            "--no-vkd3d"
+          ],
+          "choices": [],
+          "help": "Disable VKD3D for the program",
+          "required": false
+        },
+        {
+          "flags": [
+            "--no-dxvk-nvapi"
+          ],
+          "all_flags": [
+            "--no-dxvk-nvapi"
+          ],
+          "choices": [],
+          "help": "Disable DXVK Nvapi for the program",
+          "required": false
+        }
+      ],
+      "status": "ported"
+    },
+    {
+      "name": "tools",
+      "help": "Launch Wine tools",
+      "arguments": [
+        {
+          "flags": [
+            "tool"
+          ],
+          "all_flags": [
+            "tool"
+          ],
+          "choices": [
+            "cmd",
+            "winecfg",
+            "uninstaller",
+            "regedit",
+            "taskmgr",
+            "control",
+            "explorer"
+          ],
+          "help": "Tool to launch",
+          "required": false
+        },
+        {
+          "flags": [
+            "-b"
+          ],
+          "all_flags": [
+            "-b",
+            "--bottle"
+          ],
+          "choices": [],
+          "help": "Bottle name",
+          "required": true
+        }
+      ],
+      "status": "ported"
+    },
+    {
+      "name": "reg",
+      "help": "Manage registry",
+      "arguments": [
+        {
+          "flags": [
+            "action"
+          ],
+          "all_flags": [
+            "action"
+          ],
+          "choices": [
+            "add",
+            "edit",
+            "del"
+          ],
+          "help": "Action to perform",
+          "required": false
+        },
+        {
+          "flags": [
+            "-b"
+          ],
+          "all_flags": [
+            "-b",
+            "--bottle"
+          ],
+          "choices": [],
+          "help": "Bottle name",
+          "required": true
+        },
+        {
+          "flags": [
+            "-k"
+          ],
+          "all_flags": [
+            "-k",
+            "--key"
+          ],
+          "choices": [],
+          "help": "Registry key",
+          "required": true
+        },
+        {
+          "flags": [
+            "-v"
+          ],
+          "all_flags": [
+            "-v",
+            "--value"
+          ],
+          "choices": [],
+          "help": "Registry value",
+          "required": true
+        },
+        {
+          "flags": [
+            "-d"
+          ],
+          "all_flags": [
+            "-d",
+            "--data"
+          ],
+          "choices": [],
+          "help": "Data to be set",
+          "required": false
+        },
+        {
+          "flags": [
+            "-t"
+          ],
+          "all_flags": [
+            "-t",
+            "--key-type"
+          ],
+          "choices": [
+            "REG_DWORD",
+            "REG_SZ",
+            "REG_BINARY",
+            "REG_MULTI_SZ"
+          ],
+          "help": "Data type",
+          "required": false
+        }
+      ],
+      "status": "ported"
+    },
+    {
+      "name": "reg-rules",
+      "help": "Manage reusable registry rules",
+      "arguments": [
+        {
+          "flags": [
+            "action"
+          ],
+          "all_flags": [
+            "action"
+          ],
+          "choices": [
+            "list",
+            "apply",
+            "set",
+            "delete"
+          ],
+          "help": "Action to perform",
+          "required": false
+        },
+        {
+          "flags": [
+            "-b"
+          ],
+          "all_flags": [
+            "-b",
+            "--bottle"
+          ],
+          "choices": [],
+          "help": "Bottle name",
+          "required": false
+        },
+        {
+          "flags": [
+            "--name"
+          ],
+          "all_flags": [
+            "--name"
+          ],
+          "choices": [],
+          "help": "Rule name",
+          "required": false
+        },
+        {
+          "flags": [
+            "--bundle"
+          ],
+          "all_flags": [
+            "--bundle"
+          ],
+          "choices": [],
+          "help": "Path to a YAML file describing the registry bundle",
+          "required": false
+        },
+        {
+          "flags": [
+            "--description"
+          ],
+          "all_flags": [
+            "--description"
+          ],
+          "choices": [],
+          "help": "Description for the rule",
+          "required": false
+        },
+        {
+          "flags": [
+            "--triggers"
+          ],
+          "all_flags": [
+            "--triggers"
+          ],
+          "choices": [],
+          "help": "Comma separated triggers (runner_change, components, dependencies)",
+          "required": false
+        },
+        {
+          "flags": [
+            "--run-once"
+          ],
+          "all_flags": [
+            "--run-once"
+          ],
+          "choices": [],
+          "help": "Apply only once",
+          "required": false
+        },
+        {
+          "flags": [
+            "--trigger"
+          ],
+          "all_flags": [
+            "--trigger"
+          ],
+          "choices": [],
+          "help": "Trigger context to filter rules when applying",
+          "required": false
+        },
+        {
+          "flags": [
+            "--rules"
+          ],
+          "all_flags": [
+            "--rules"
+          ],
+          "choices": [],
+          "help": "Specific rule names to apply",
+          "required": false
+        }
+      ],
+      "status": "ported"
+    },
+    {
+      "name": "edit",
+      "help": "Edit a bottle configuration",
+      "arguments": [
+        {
+          "flags": [
+            "-b"
+          ],
+          "all_flags": [
+            "-b",
+            "--bottle"
+          ],
+          "choices": [],
+          "help": "Bottle name",
+          "required": true
+        },
+        {
+          "flags": [
+            "--params"
+          ],
+          "all_flags": [
+            "--params"
+          ],
+          "choices": [],
+          "help": "Set parameters (e.g. '-p dxvk:true')",
+          "required": false
+        },
+        {
+          "flags": [
+            "--env-var"
+          ],
+          "all_flags": [
+            "--env-var"
+          ],
+          "choices": [],
+          "help": "Add new environment variable (e.g. '-env-var WINEDEBUG=-all')",
+          "required": false
+        },
+        {
+          "flags": [
+            "--win"
+          ],
+          "all_flags": [
+            "--win"
+          ],
+          "choices": [],
+          "help": "Change Windows version (e.g. '--win win7')",
+          "required": false
+        },
+        {
+          "flags": [
+            "--runner"
+          ],
+          "all_flags": [
+            "--runner"
+          ],
+          "choices": [],
+          "help": "Change Runner (e.g. '--runner caffe-7.2')",
+          "required": false
+        },
+        {
+          "flags": [
+            "--d7vk"
+          ],
+          "all_flags": [
+            "--d7vk"
+          ],
+          "choices": [],
+          "help": "Change D7VK or disable it (e.g. '--d7vk d7vk-v2.0')",
+          "required": false
+        },
+        {
+          "flags": [
+            "--dxvk"
+          ],
+          "all_flags": [
+            "--dxvk"
+          ],
+          "choices": [],
+          "help": "Change DXVK (e.g. '--dxvk dxvk-1.9.0')",
+          "required": false
+        },
+        {
+          "flags": [
+            "--vkd3d"
+          ],
+          "all_flags": [
+            "--vkd3d"
+          ],
+          "choices": [],
+          "help": "Change VKD3D (e.g. '--vkd3d vkd3d-proton-2.6')",
+          "required": false
+        },
+        {
+          "flags": [
+            "--nvapi"
+          ],
+          "all_flags": [
+            "--nvapi"
+          ],
+          "choices": [],
+          "help": "Change DXVK-Nvapi (e.g. '--nvapi dxvk-nvapi-1.9.0')",
+          "required": false
+        },
+        {
+          "flags": [
+            "--latencyflex"
+          ],
+          "all_flags": [
+            "--latencyflex"
+          ],
+          "choices": [],
+          "help": "Change LatencyFleX (e.g. '--latencyflex latencyflex-v0.1.0')",
+          "required": false
+        }
+      ],
+      "status": "ported"
+    },
+    {
+      "name": "new",
+      "help": "Create a new bottle",
+      "arguments": [
+        {
+          "flags": [
+            "--bottle-name"
+          ],
+          "all_flags": [
+            "--bottle-name"
+          ],
+          "choices": [],
+          "help": "Bottle name",
+          "required": true
+        },
+        {
+          "flags": [
+            "--environment"
+          ],
+          "all_flags": [
+            "--environment"
+          ],
+          "choices": [],
+          "help": "Environment to apply (gaming|application|custom)",
+          "required": true
+        },
+        {
+          "flags": [
+            "--custom-environment"
+          ],
+          "all_flags": [
+            "--custom-environment"
+          ],
+          "choices": [],
+          "help": "Path to a custom environment.yml file",
+          "required": false
+        },
+        {
+          "flags": [
+            "--arch"
+          ],
+          "all_flags": [
+            "--arch"
+          ],
+          "choices": [],
+          "help": "Architecture (win32|win64)",
+          "required": false
+        },
+        {
+          "flags": [
+            "--runner"
+          ],
+          "all_flags": [
+            "--runner"
+          ],
+          "choices": [],
+          "help": "Name of the runner to be used",
+          "required": false
+        },
+        {
+          "flags": [
+            "--d7vk"
+          ],
+          "all_flags": [
+            "--d7vk"
+          ],
+          "choices": [],
+          "help": "Name of the d7vk to be used",
+          "required": false
+        },
+        {
+          "flags": [
+            "--dxvk"
+          ],
+          "all_flags": [
+            "--dxvk"
+          ],
+          "choices": [],
+          "help": "Name of the dxvk to be used",
+          "required": false
+        },
+        {
+          "flags": [
+            "--vkd3d"
+          ],
+          "all_flags": [
+            "--vkd3d"
+          ],
+          "choices": [],
+          "help": "Name of the vkd3d to be used",
+          "required": false
+        },
+        {
+          "flags": [
+            "--nvapi"
+          ],
+          "all_flags": [
+            "--nvapi"
+          ],
+          "choices": [],
+          "help": "Name of the dxvk-nvapi to be used",
+          "required": false
+        },
+        {
+          "flags": [
+            "--latencyflex"
+          ],
+          "all_flags": [
+            "--latencyflex"
+          ],
+          "choices": [],
+          "help": "Name of the latencyflex to be used",
+          "required": false
+        }
+      ],
+      "status": "ported"
+    },
+    {
+      "name": "run",
+      "help": "Run a program",
+      "arguments": [
+        {
+          "flags": [
+            "-b"
+          ],
+          "all_flags": [
+            "-b",
+            "--bottle"
+          ],
+          "choices": [],
+          "help": "Bottle name",
+          "required": true
+        },
+        {
+          "flags": [
+            "-e"
+          ],
+          "all_flags": [
+            "-e",
+            "--executable"
+          ],
+          "choices": [],
+          "help": "Path to the executable",
+          "required": false
+        },
+        {
+          "flags": [
+            "-p"
+          ],
+          "all_flags": [
+            "-p",
+            "--program"
+          ],
+          "choices": [],
+          "help": "Program to run",
+          "required": false
+        },
+        {
+          "flags": [
+            "--program-id"
+          ],
+          "all_flags": [
+            "--program-id"
+          ],
+          "choices": [],
+          "help": "Stored program identifier",
+          "required": false
+        },
+        {
+          "flags": [
+            "--args-replace"
+          ],
+          "all_flags": [
+            "--args-replace"
+          ],
+          "choices": [],
+          "help": "Replace current program arguments, instead of append",
+          "required": false
+        },
+        {
+          "flags": [
+            "args"
+          ],
+          "all_flags": [
+            "args"
+          ],
+          "choices": [],
+          "help": "Arguments to pass to the executable",
+          "required": false
+        }
+      ],
+      "status": "ported"
+    },
+    {
+      "name": "stop",
+      "help": "Stop all processes running in a bottle",
+      "arguments": [
+        {
+          "flags": [
+            "-b"
+          ],
+          "all_flags": [
+            "-b",
+            "--bottle"
+          ],
+          "choices": [],
+          "help": "Bottle name",
+          "required": true
+        }
+      ],
+      "status": "ported"
+    },
+    {
+      "name": "standalone",
+      "help": "Generate a standalone script to launch commands without passing trough Bottles",
+      "arguments": [
+        {
+          "flags": [
+            "-b"
+          ],
+          "all_flags": [
+            "-b",
+            "--bottle"
+          ],
+          "choices": [],
+          "help": "Bottle name",
+          "required": true
+        }
+      ],
+      "status": "ported"
+    },
+    {
+      "name": "shell",
+      "help": "Launch commands in a Wine shell",
+      "arguments": [
+        {
+          "flags": [
+            "-b"
+          ],
+          "all_flags": [
+            "-b",
+            "--bottle"
+          ],
+          "choices": [],
+          "help": "Bottle name",
+          "required": true
+        },
+        {
+          "flags": [
+            "-i"
+          ],
+          "all_flags": [
+            "-i",
+            "--input"
+          ],
+          "choices": [],
+          "help": "Command to execute",
+          "required": true
+        }
+      ],
+      "status": "ported"
+    },
+    {
+      "name": "umu",
+      "help": "Manage UMU games",
+      "arguments": [
+        {
+          "flags": [
+            "action"
+          ],
+          "all_flags": [
+            "action"
+          ],
+          "choices": [
+            "list",
+            "status",
+            "add",
+            "install",
+            "run",
+            "set-executable"
+          ],
+          "help": "",
+          "required": false
+        },
+        {
+          "flags": [
+            "--game"
+          ],
+          "all_flags": [
+            "--game"
+          ],
+          "choices": [],
+          "help": "UMU game id or exact name",
+          "required": false
+        },
+        {
+          "flags": [
+            "--name"
+          ],
+          "all_flags": [
+            "--name"
+          ],
+          "choices": [],
+          "help": "Game name",
+          "required": false
+        },
+        {
+          "flags": [
+            "--executable"
+          ],
+          "all_flags": [
+            "--executable"
+          ],
+          "choices": [],
+          "help": "Windows executable or installer",
+          "required": false
+        },
+        {
+          "flags": [
+            "--game-id"
+          ],
+          "all_flags": [
+            "--game-id"
+          ],
+          "choices": [],
+          "help": "",
+          "required": false
+        },
+        {
+          "flags": [
+            "--store"
+          ],
+          "all_flags": [
+            "--store"
+          ],
+          "choices": [
+            "U",
+            "M",
+            "U",
+            "_",
+            "S",
+            "T",
+            "O",
+            "R",
+            "E",
+            "_",
+            "I",
+            "D",
+            "S"
+          ],
+          "help": "",
+          "required": false
+        },
+        {
+          "flags": [
+            "--proton"
+          ],
+          "all_flags": [
+            "--proton"
+          ],
+          "choices": [],
+          "help": "Proton version or path",
+          "required": false
+        },
+        {
+          "flags": [
+            "--sandbox"
+          ],
+          "all_flags": [
+            "--sandbox"
+          ],
+          "choices": [],
+          "help": "Use a dedicated sandbox",
+          "required": false
+        },
+        {
+          "flags": [
+            "--share-network"
+          ],
+          "all_flags": [
+            "--share-network"
+          ],
+          "choices": [],
+          "help": "Allow network access in the dedicated sandbox",
+          "required": false
+        }
+      ],
+      "status": "partial"
+    },
+    {
+      "name": "autostart",
+      "help": "Run programs configured to start at login",
+      "arguments": [],
+      "status": "ported"
+    }
+  ],
+  "global_arguments": [
+    {
+      "flags": [
+        "-v"
+      ],
+      "all_flags": [
+        "-v",
+        "--version"
+      ],
+      "choices": [],
+      "help": "",
+      "required": false
+    },
+    {
+      "flags": [
+        "-j"
+      ],
+      "all_flags": [
+        "-j",
+        "--json"
+      ],
+      "choices": [],
+      "help": "Outputs in JSON format",
+      "required": false
+    }
+  ]
+}

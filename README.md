@@ -35,6 +35,18 @@
 
 Refer to the [Contributing](CONTRIBUTING.md) page.
 
+## Rust/egui rewrite (in progress)
+
+An incremental Rust/egui rewrite lives in [`rust/`](rust/README.md). It shares
+the Python app's data formats and provides a Rust CLI plus an `eframe` desktop
+application. The Python tree remains the behavioral reference during the
+migration. [`rust/PARITY.md`](rust/PARITY.md) is generated from this source tree
+and records the exact port status of every config field, setting, CLI command,
+Blueprint surface, and backend module.
+
+> This is not a claim that every Python subsystem has been ported yet; the
+> parity report explicitly identifies partial and reference-only features.
+
 ## Building
 
 ⚠️ Be sure to backup all your data before testing experimental builds of Bottles!

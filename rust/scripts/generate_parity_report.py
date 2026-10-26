@@ -74,7 +74,7 @@ def render() -> str:
         "- `library.yml`, `journal.yml`, `data.yml`, GSettings schema, and UMU `game.yml` compatibility.",
         "- Wine runner resolution, environment construction, file-type dispatch, Wine tools, registry operations, standalone scripts, and process launch.",
         "- The full Python CLI command surface with JSON/text output.",
-        "- An egui/eframe application with library, bottles, details, components, importer, journal, health, preferences, UMU, about, and source-derived parity screens.",
+        "- An egui/eframe front end modeled on the checked-in GTK4/Blueprint screens: header-bar view switcher, bottle list, library cards, bottle details, settings, dependencies, installers, snapshots, task manager, registry rules, preferences, dialogs, and source-derived diagnostics.",
         "- Unit tests that compare Rust field/command/settings lists against generated Python contracts.",
         "",
         "## CLI port status",

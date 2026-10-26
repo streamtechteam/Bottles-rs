@@ -35,7 +35,7 @@ RUST_SURFACES = {
     "bottles/backend/state.py": ("crates/bottles-core/src/state.rs", "partial"),
     "bottles/frontend/cli/cli.py": ("crates/bottles-cli/src/main.rs", "partial"),
     "bottles/frontend/main.py": ("crates/bottles-gui/src/main.rs", "partial"),
-    "bottles/frontend/windows/window.py": ("crates/bottles-gui/src/app.rs", "partial"),
+    "bottles/frontend/windows/window.py": ("crates/bottles-gui/src/ui.rs", "partial"),
 }
 
 CLI_STATUS = {
@@ -63,8 +63,8 @@ GUI_STATUS = {
     "details-bottle": "ported",
     "details-preferences": "ported",
     "details-dependencies": "partial",
-    "details-installers": "inventory-only",
-    "details-versioning": "inventory-only",
+    "details-installers": "partial",
+    "details-versioning": "partial",
     "details-taskmanager": "partial",
     "details-registry-rules": "ported",
     "library": "ported",
@@ -73,6 +73,11 @@ GUI_STATUS = {
     "loading": "ported",
     "new-bottle-dialog": "ported",
     "dialog-journal": "ported",
+    "dialog-rename": "ported",
+    "dialog-duplicate": "ported",
+    "dialog-launch-options": "ported",
+    "dialog-env-vars": "ported",
+    "dialog-registry-rules": "ported",
     "help-overlay": "ported",
 }
 
@@ -266,7 +271,7 @@ def parse_css_and_ui() -> dict[str, Any]:
                 "kind": "dialog" if stem.startswith("dialog-") else "screen",
                 "status": GUI_STATUS.get(stem, "inventory-only"),
                 "rust_surface": (
-                    "crates/bottles-gui/src/app.rs"
+                    "crates/bottles-gui/src/ui.rs"
                     if GUI_STATUS.get(stem, "inventory-only") != "inventory-only"
                     else ""
                 ),

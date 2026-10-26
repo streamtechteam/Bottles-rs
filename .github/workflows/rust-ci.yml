@@ -46,7 +46,8 @@ jobs:
             libxkbcommon-dev \
             libwayland-dev \
             libgl1-mesa-dev \
-            libudev-dev
+            libudev-dev \
+            python3-yaml
       - uses: dtolnay/rust-toolchain@stable
         with:
           components: rustfmt, clippy
@@ -57,15 +58,17 @@ jobs:
         run: |
           python3 rust/scripts/generate_contracts.py --check
           python3 rust/scripts/generate_parity_report.py --check
+      - name: Verify GUI catalogs
+        run: python3 rust/scripts/generate_gui_catalogs.py --check
       - name: Format
         working-directory: rust
         run: cargo fmt --all -- --check
       - name: Clippy
         working-directory: rust
         run: cargo clippy --locked --workspace --all-targets
-      - name: Core and CLI tests
+      - name: Workspace tests
         working-directory: rust
-        run: cargo test --locked -p bottles-core -p bottles-cli
+        run: cargo test --locked --workspace
       - name: Check egui application
         working-directory: rust
         run: cargo check --locked -p bottles-gui --all-targets

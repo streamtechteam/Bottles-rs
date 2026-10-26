@@ -23,6 +23,13 @@ implementation in `../bottles`.
 Generated contracts live in `contracts/`. They are produced by
 `scripts/generate_contracts.py` from the Python AST, GSettings XML, and
 Blueprint file names. `scripts/generate_parity_report.py` produces `PARITY.md`.
+`scripts/generate_gui_catalogs.py` produces the pinned installer, dependency,
+and component snapshot used by the GUI.
+
+The GUI structure is documented in
+`../docs/rust-egui-rework-plan.md`, with a source-derived visual mockup in
+`../docs/rust-egui-mockup.html`. The egui front end follows the checked-in
+GTK4/Blueprint screen hierarchy rather than using a generic dashboard layout.
 
 ## Build
 
@@ -73,8 +80,12 @@ dataclasses. Legacy `fsr_level`, `show_component_updates`, `DXVK_NVAPI`, and
   stop, and standalone script generation.
 - Library, journal, user data, GSettings, and UMU game metadata.
 - Full CLI parser/output surface, including JSON and UMU actions.
-- egui screens for library, bottles, details, components, importer, journal,
-  health, preferences, UMU, about, and source-derived parity.
+- an egui front end with the Bottles header-bar view switcher, bottle list,
+  library cards, bottle details, settings, dependencies, installers, snapshots,
+  task manager, registry rules, preferences, importer, journal, UMU, about, and
+  source-derived diagnostics screens.
+- offline installer, dependency, and component catalogs generated from the
+  exact upstream commits pinned by the Python repository manager.
 - Unit and integration tests, including contract-drift assertions.
 
 ## What is not claimed as complete
@@ -94,8 +105,10 @@ pretend that a feature succeeded.
 ```bash
 python3 scripts/generate_contracts.py
 python3 scripts/generate_parity_report.py
+python3 scripts/generate_gui_catalogs.py
 python3 scripts/generate_contracts.py --check
 python3 scripts/generate_parity_report.py --check
+python3 scripts/generate_gui_catalogs.py --check
 ```
 
 CI runs the same checks.

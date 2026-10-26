@@ -26,9 +26,9 @@ This report is generated from the existing Python application by
 
 | Status | Count |
 |---|---:|
-| `inventory-only` | 63 |
-| `partial` | 10 |
-| `ported` | 34 |
+| `inventory-only` | 56 |
+| `partial` | 12 |
+| `ported` | 39 |
 | `reference-only` | 194 |
 
 ## Implemented compatibility layer
@@ -40,7 +40,7 @@ This report is generated from the existing Python application by
 - `library.yml`, `journal.yml`, `data.yml`, GSettings schema, and UMU `game.yml` compatibility.
 - Wine runner resolution, environment construction, file-type dispatch, Wine tools, registry operations, standalone scripts, and process launch.
 - The full Python CLI command surface with JSON/text output.
-- An egui/eframe application with library, bottles, details, components, importer, journal, health, preferences, UMU, about, and source-derived parity screens.
+- An egui/eframe front end modeled on the checked-in GTK4/Blueprint screens: header-bar view switcher, bottle list, library cards, bottle details, settings, dependencies, installers, snapshots, task manager, registry rules, preferences, dialogs, and source-derived diagnostics.
 - Unit tests that compare Rust field/command/settings lists against generated Python contracts.
 
 ## CLI port status
@@ -72,14 +72,14 @@ This report is generated from the existing Python application by
 | `check-row.blp` | screen | `inventory-only` | — |
 | `component-entry.blp` | screen | `inventory-only` | — |
 | `dependency-entry.blp` | screen | `inventory-only` | — |
-| `details-bottle.blp` | screen | `ported` | `crates/bottles-gui/src/app.rs` |
-| `details-dependencies.blp` | screen | `partial` | `crates/bottles-gui/src/app.rs` |
-| `details-installers.blp` | screen | `inventory-only` | — |
-| `details-preferences.blp` | screen | `ported` | `crates/bottles-gui/src/app.rs` |
-| `details-registry-rules.blp` | screen | `ported` | `crates/bottles-gui/src/app.rs` |
-| `details-taskmanager.blp` | screen | `partial` | `crates/bottles-gui/src/app.rs` |
-| `details-versioning.blp` | screen | `inventory-only` | — |
-| `details.blp` | screen | `ported` | `crates/bottles-gui/src/app.rs` |
+| `details-bottle.blp` | screen | `ported` | `crates/bottles-gui/src/ui.rs` |
+| `details-dependencies.blp` | screen | `partial` | `crates/bottles-gui/src/ui.rs` |
+| `details-installers.blp` | screen | `partial` | `crates/bottles-gui/src/ui.rs` |
+| `details-preferences.blp` | screen | `ported` | `crates/bottles-gui/src/ui.rs` |
+| `details-registry-rules.blp` | screen | `ported` | `crates/bottles-gui/src/ui.rs` |
+| `details-taskmanager.blp` | screen | `partial` | `crates/bottles-gui/src/ui.rs` |
+| `details-versioning.blp` | screen | `partial` | `crates/bottles-gui/src/ui.rs` |
+| `details.blp` | screen | `ported` | `crates/bottles-gui/src/ui.rs` |
 | `dialog-bottle-picker.blp` | dialog | `inventory-only` | — |
 | `dialog-crash-report.blp` | dialog | `inventory-only` | — |
 | `dialog-dependency-install.blp` | dialog | `inventory-only` | — |
@@ -87,21 +87,21 @@ This report is generated from the existing Python application by
 | `dialog-display.blp` | dialog | `inventory-only` | — |
 | `dialog-dll-overrides.blp` | dialog | `inventory-only` | — |
 | `dialog-drives.blp` | dialog | `inventory-only` | — |
-| `dialog-duplicate.blp` | dialog | `inventory-only` | — |
-| `dialog-env-vars.blp` | dialog | `inventory-only` | — |
+| `dialog-duplicate.blp` | dialog | `ported` | `crates/bottles-gui/src/ui.rs` |
+| `dialog-env-vars.blp` | dialog | `ported` | `crates/bottles-gui/src/ui.rs` |
 | `dialog-exclusion-patterns.blp` | dialog | `inventory-only` | — |
 | `dialog-file-associations.blp` | dialog | `inventory-only` | — |
 | `dialog-gamescope.blp` | dialog | `inventory-only` | — |
 | `dialog-installer.blp` | dialog | `inventory-only` | — |
-| `dialog-journal.blp` | dialog | `ported` | `crates/bottles-gui/src/app.rs` |
-| `dialog-launch-options.blp` | dialog | `inventory-only` | — |
+| `dialog-journal.blp` | dialog | `ported` | `crates/bottles-gui/src/ui.rs` |
+| `dialog-launch-options.blp` | dialog | `ported` | `crates/bottles-gui/src/ui.rs` |
 | `dialog-lsfg-vk.blp` | dialog | `inventory-only` | — |
 | `dialog-mangohud.blp` | dialog | `inventory-only` | — |
 | `dialog-playtime-graph.blp` | dialog | `inventory-only` | — |
 | `dialog-program-backups.blp` | dialog | `inventory-only` | — |
 | `dialog-proton-alert.blp` | dialog | `inventory-only` | — |
-| `dialog-registry-rules.blp` | dialog | `inventory-only` | — |
-| `dialog-rename.blp` | dialog | `inventory-only` | — |
+| `dialog-registry-rules.blp` | dialog | `ported` | `crates/bottles-gui/src/ui.rs` |
+| `dialog-rename.blp` | dialog | `ported` | `crates/bottles-gui/src/ui.rs` |
 | `dialog-run-args.blp` | dialog | `inventory-only` | — |
 | `dialog-sandbox.blp` | dialog | `inventory-only` | — |
 | `dialog-umu-add.blp` | dialog | `inventory-only` | — |
@@ -125,26 +125,26 @@ This report is generated from the existing Python application by
 | `eagle.blp` | screen | `inventory-only` | — |
 | `env-var-entry.blp` | screen | `inventory-only` | — |
 | `exclusion-pattern-entry.blp` | screen | `inventory-only` | — |
-| `help-overlay.blp` | screen | `ported` | `crates/bottles-gui/src/app.rs` |
+| `help-overlay.blp` | screen | `ported` | `crates/bottles-gui/src/ui.rs` |
 | `importer-entry.blp` | screen | `inventory-only` | — |
-| `importer.blp` | screen | `ported` | `crates/bottles-gui/src/app.rs` |
+| `importer.blp` | screen | `ported` | `crates/bottles-gui/src/ui.rs` |
 | `inherited-env-entry.blp` | screen | `inventory-only` | — |
 | `installer-entry.blp` | screen | `inventory-only` | — |
 | `library-add-entry.blp` | screen | `inventory-only` | — |
 | `library-entry.blp` | screen | `inventory-only` | — |
-| `library.blp` | screen | `ported` | `crates/bottles-gui/src/app.rs` |
-| `list.blp` | screen | `ported` | `crates/bottles-gui/src/app.rs` |
-| `loading.blp` | screen | `ported` | `crates/bottles-gui/src/app.rs` |
+| `library.blp` | screen | `ported` | `crates/bottles-gui/src/ui.rs` |
+| `list.blp` | screen | `ported` | `crates/bottles-gui/src/ui.rs` |
+| `loading.blp` | screen | `ported` | `crates/bottles-gui/src/ui.rs` |
 | `local-resource-entry.blp` | screen | `inventory-only` | — |
-| `new-bottle-dialog.blp` | screen | `ported` | `crates/bottles-gui/src/app.rs` |
+| `new-bottle-dialog.blp` | screen | `ported` | `crates/bottles-gui/src/ui.rs` |
 | `onboard.blp` | screen | `inventory-only` | — |
-| `preferences.blp` | screen | `ported` | `crates/bottles-gui/src/app.rs` |
+| `preferences.blp` | screen | `ported` | `crates/bottles-gui/src/ui.rs` |
 | `program-entry.blp` | screen | `inventory-only` | — |
 | `registry-rule-entry.blp` | screen | `inventory-only` | — |
 | `state-entry.blp` | screen | `inventory-only` | — |
 | `task-entry.blp` | screen | `inventory-only` | — |
 | `umu-prefix-row.blp` | screen | `inventory-only` | — |
-| `window.blp` | screen | `ported` | `crates/bottles-gui/src/app.rs` |
+| `window.blp` | screen | `ported` | `crates/bottles-gui/src/ui.rs` |
 
 ## Python modules still serving as reference
 

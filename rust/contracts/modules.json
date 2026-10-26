@@ -1434,7 +1434,7 @@
       "source": "bottles/frontend/windows/window.py",
       "area": "frontend",
       "status": "partial",
-      "rust_surface": "crates/bottles-gui/src/app.rs"
+      "rust_surface": "crates/bottles-gui/src/ui.rs"
     },
     {
       "name": "winebridgeupdate",

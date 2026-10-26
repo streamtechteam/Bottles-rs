@@ -128,10 +128,8 @@ impl Contracts {
                 .expect("embedded config_fields contract must be valid"),
             settings: serde_json::from_str(SETTINGS_JSON)
                 .expect("embedded settings contract must be valid"),
-            cli: serde_json::from_str(CLI_JSON)
-                .expect("embedded cli contract must be valid"),
-            ui: serde_json::from_str(UI_JSON)
-                .expect("embedded ui contract must be valid"),
+            cli: serde_json::from_str(CLI_JSON).expect("embedded cli contract must be valid"),
+            ui: serde_json::from_str(UI_JSON).expect("embedded ui contract must be valid"),
             modules: serde_json::from_str(MODULES_JSON)
                 .expect("embedded modules contract must be valid"),
         }
@@ -208,8 +206,16 @@ pub fn inventory() -> Vec<FeatureRecord> {
     let mut records = Vec::new();
 
     for group in [
-        ("config", &contracts.config_fields.bottle_config, "crates/bottles-core/src/config.rs"),
-        ("parameter", &contracts.config_fields.bottle_params, "crates/bottles-core/src/config.rs"),
+        (
+            "config",
+            &contracts.config_fields.bottle_config,
+            "crates/bottles-core/src/config.rs",
+        ),
+        (
+            "parameter",
+            &contracts.config_fields.bottle_params,
+            "crates/bottles-core/src/config.rs",
+        ),
         (
             "sandbox-parameter",
             &contracts.config_fields.bottle_sandbox_params,
@@ -334,9 +340,9 @@ mod tests {
     fn inventory_contains_every_generated_cli_command() {
         let inventory = inventory();
         for command in &contracts().cli.commands {
-            assert!(inventory.iter().any(|record| {
-                record.kind == "cli-command" && record.id == command.name
-            }));
+            assert!(inventory
+                .iter()
+                .any(|record| { record.kind == "cli-command" && record.id == command.name }));
         }
     }
 }

@@ -156,11 +156,9 @@ impl WineLauncher {
             } else {
                 wine.or(wine64)
             };
-            return resolved.ok_or_else(|| {
-                BottlesError::CommandFailed {
-                    command: "wine".to_owned(),
-                    message: "system Wine runner was not found".to_owned(),
-                }
+            return resolved.ok_or_else(|| BottlesError::CommandFailed {
+                command: "wine".to_owned(),
+                message: "system Wine runner was not found".to_owned(),
             });
         }
         let root = self.paths.runners.join(&self.config.runner);
@@ -231,7 +229,10 @@ impl WineLauncher {
             environment.remove("DISABLE_LFX");
             let layer = self
                 .paths
-                .component_path(crate::paths::ComponentKind::LatencyFlex, &self.config.latency_flex)
+                .component_path(
+                    crate::paths::ComponentKind::LatencyFlex,
+                    &self.config.latency_flex,
+                )
                 .join("layer/usr/share/vulkan/implicit_layer.d");
             append_env_value(
                 &mut environment,
@@ -370,7 +371,12 @@ impl WineLauncher {
             overrides.push(format!("{key}={value}"));
         }
         overrides.push("winemenubuilder=''".to_owned());
-        append_env_value(&mut environment, "WINEDLLOVERRIDES", &overrides.join(";"), ";");
+        append_env_value(
+            &mut environment,
+            "WINEDLLOVERRIDES",
+            &overrides.join(";"),
+            ";",
+        );
 
         for (key, value) in extra {
             if PROGRAM_ENVIRONMENT_DENYLIST.contains(&key.as_str()) {
@@ -414,13 +420,21 @@ impl WineLauncher {
         }
         if let Some(gamescope) = program.gamescope {
             if gamescope != self.config.parameters.gamescope {
-                extra.insert("GAMESCOPE".to_owned(), if gamescope { "1" } else { "0" }.to_owned());
+                extra.insert(
+                    "GAMESCOPE".to_owned(),
+                    if gamescope { "1" } else { "0" }.to_owned(),
+                );
             }
         }
         extra
     }
 
-    pub fn plan(&self, executable: &str, arguments: &[String], cwd: Option<PathBuf>) -> Result<LaunchPlan> {
+    pub fn plan(
+        &self,
+        executable: &str,
+        arguments: &[String],
+        cwd: Option<PathBuf>,
+    ) -> Result<LaunchPlan> {
         self.plan_with_environment(executable, arguments, cwd, &BTreeMap::new(), false)
     }
 
@@ -441,9 +455,17 @@ impl WineLauncher {
             .map(|value| format!(".{}", value.to_ascii_lowercase()))
             .unwrap_or_default();
         let mut command_arguments = match extension.as_str() {
-            ".msi" => vec!["msiexec".to_owned(), "/i".to_owned(), clean_executable.clone()],
+            ".msi" => vec![
+                "msiexec".to_owned(),
+                "/i".to_owned(),
+                clean_executable.clone(),
+            ],
             ".bat" => vec!["cmd".to_owned(), "/c".to_owned(), clean_executable.clone()],
-            ".lnk" => vec!["start".to_owned(), "/unix".to_owned(), clean_executable.clone()],
+            ".lnk" => vec![
+                "start".to_owned(),
+                "/unix".to_owned(),
+                clean_executable.clone(),
+            ],
             _ => vec![clean_executable.clone()],
         };
         command_arguments.extend(arguments.iter().cloned());
@@ -458,7 +480,11 @@ impl WineLauncher {
         })
     }
 
-    pub fn program_plan(&self, program: &ExternalProgram, extra_args: &[String]) -> Result<LaunchPlan> {
+    pub fn program_plan(
+        &self,
+        program: &ExternalProgram,
+        extra_args: &[String],
+    ) -> Result<LaunchPlan> {
         let mut arguments = String::new();
         if program.arguments_enabled.unwrap_or(true) {
             arguments = program.arguments.clone().unwrap_or_default();
@@ -542,7 +568,10 @@ impl WineLauncher {
             script.push_str(&format!("export {key}='{}'\n", shell_single_quote(&value)));
         }
         let runner = self.runner()?;
-        script.push_str(&format!("'{}' \"$@\"\n", shell_single_quote(&runner.to_string_lossy())));
+        script.push_str(&format!(
+            "'{}' \"$@\"\n",
+            shell_single_quote(&runner.to_string_lossy())
+        ));
         Ok(script)
     }
 }
@@ -585,12 +614,19 @@ fn apply_lsfg_vk_environment(environment: &mut BTreeMap<String, String>, launche
     }
     let multiplier = params.lsfg_vk_multiplier.to_string();
     let flow_scale = params.lsfg_vk_flow_scale.to_string();
-    let performance = if params.lsfg_vk_performance_mode { "1" } else { "0" };
+    let performance = if params.lsfg_vk_performance_mode {
+        "1"
+    } else {
+        "0"
+    };
     if version == 2 {
         environment.insert("DISABLE_LSFG".to_owned(), "1".to_owned());
         environment.remove("DISABLE_LSFGVK");
         environment.insert("LSFGVK_ENV".to_owned(), "1".to_owned());
-        environment.insert("LSFGVK_DLL_PATH".to_owned(), dll.to_string_lossy().into_owned());
+        environment.insert(
+            "LSFGVK_DLL_PATH".to_owned(),
+            dll.to_string_lossy().into_owned(),
+        );
         environment.insert("LSFGVK_MULTIPLIER".to_owned(), multiplier);
         environment.insert("LSFGVK_FLOW_SCALE".to_owned(), flow_scale);
         environment.insert("LSFGVK_PERFORMANCE_MODE".to_owned(), performance.to_owned());
@@ -598,7 +634,10 @@ fn apply_lsfg_vk_environment(environment: &mut BTreeMap<String, String>, launche
         environment.remove("DISABLE_LSFG");
         environment.insert("DISABLE_LSFGVK".to_owned(), "1".to_owned());
         environment.insert("LSFG_LEGACY".to_owned(), "1".to_owned());
-        environment.insert("LSFG_DLL_PATH".to_owned(), dll.to_string_lossy().into_owned());
+        environment.insert(
+            "LSFG_DLL_PATH".to_owned(),
+            dll.to_string_lossy().into_owned(),
+        );
         environment.insert("LSFG_MULTIPLIER".to_owned(), multiplier);
         environment.insert("LSFG_FLOW_SCALE".to_owned(), flow_scale);
         environment.insert("LSFG_PERFORMANCE_MODE".to_owned(), performance.to_owned());
@@ -615,7 +654,9 @@ fn normalized_hidraw_ids(values: &[String]) -> Vec<String> {
             continue;
         }
         let parse = |part: &str| {
-            let digits = part.strip_prefix("0x").or_else(|| part.strip_prefix("0X"))?;
+            let digits = part
+                .strip_prefix("0x")
+                .or_else(|| part.strip_prefix("0X"))?;
             if digits.len() != 4 || !digits.chars().all(|c| c.is_ascii_hexdigit()) {
                 return None;
             }
@@ -653,7 +694,10 @@ pub fn resolve_placeholders(
         .map(|value| value.to_string_lossy().into_owned())
         .unwrap_or_default();
     let replacements = [
-        ("%PROGRAM_NAME%", program.executable.clone().unwrap_or(program_name.clone())),
+        (
+            "%PROGRAM_NAME%",
+            program.executable.clone().unwrap_or(program_name.clone()),
+        ),
         ("%PROGRAM_PATH%", program_path),
         ("%PROGRAM_DIR%", program_dir),
         ("%BOTTLE_NAME%", config.name.clone()),
@@ -708,7 +752,10 @@ pub fn serialize_arguments(arguments: &[String]) -> String {
         .iter()
         .map(|argument| {
             if argument.contains(' ') || argument.contains('\'') || argument.contains('"') {
-                format!("\"{}\"", argument.replace('\\', "\\\\").replace('"', "\\\""))
+                format!(
+                    "\"{}\"",
+                    argument.replace('\\', "\\\\").replace('"', "\\\"")
+                )
             } else {
                 argument.clone()
             }
@@ -764,7 +811,11 @@ mod tests {
     #[test]
     fn hidraw_ids_are_normalized_and_deduplicated() {
         assert_eq!(
-            normalized_hidraw_ids(&["0x1234/0xabcd".to_owned(), "0x1234/0xabcd".to_owned(), "bad".to_owned()]),
+            normalized_hidraw_ids(&[
+                "0x1234/0xabcd".to_owned(),
+                "0x1234/0xabcd".to_owned(),
+                "bad".to_owned()
+            ]),
             vec!["0x1234/0xABCD".to_owned()]
         );
     }

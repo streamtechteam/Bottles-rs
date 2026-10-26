@@ -184,19 +184,12 @@ impl AppState {
     }
 
     pub fn refresh_all(&mut self) {
-        self.bottles = self
-            .context
-            .manager
-            .list_bottles()
-            .unwrap_or_else(|error| {
-                self.set_error(error);
-                Vec::new()
-            });
+        self.bottles = self.context.manager.list_bottles().unwrap_or_else(|error| {
+            self.set_error(error);
+            Vec::new()
+        });
         self.components = self.context.manager.components();
-        self.importer_candidates = self
-            .context
-            .manager
-            .search_wineprefixes(&[]);
+        self.importer_candidates = self.context.manager.search_wineprefixes(&[]);
         self.umu_games = self
             .context
             .umu_repository()
@@ -282,11 +275,7 @@ impl AppState {
             return;
         };
         let new_name = self.rename_input.clone();
-        match self
-            .context
-            .manager
-            .rename_bottle(bottle.name(), &new_name)
-        {
+        match self.context.manager.rename_bottle(bottle.name(), &new_name) {
             Ok(_) => {
                 let old_name = bottle.name().to_owned();
                 if let Err(error) = self.context.library.rename_bottle(&old_name, &new_name) {
@@ -416,7 +405,9 @@ impl AppState {
             self.set_error("Environment variable name is empty");
             return;
         }
-        match bottle.config.set_environment_variable(&key, &value)
+        match bottle
+            .config
+            .set_environment_variable(&key, &value)
             .and_then(|_| self.context.manager.save_config(&bottle))
         {
             Ok(()) => {
@@ -558,10 +549,7 @@ impl BottlesApp {
             self.state.set_toast("Refreshed");
         }
         ui.label(RichText::new(format!("{} bottles", self.state.bottles.len())).weak());
-        ui.label(RichText::new(format!(
-            "{} source-derived features",
-            inventory().len()
-        )).weak());
+        ui.label(RichText::new(format!("{} source-derived features", inventory().len())).weak());
     }
 
     fn top_bar(&mut self, ui: &mut egui::Ui) {
@@ -665,7 +653,11 @@ impl BottlesApp {
                             }
                         });
                 });
-                labeled_text(ui, "Custom parent path", &mut self.state.new_bottle_custom_path);
+                labeled_text(
+                    ui,
+                    "Custom parent path",
+                    &mut self.state.new_bottle_custom_path,
+                );
                 if ui.button("Create").clicked() {
                     self.state.create_bottle();
                 }
@@ -740,26 +732,28 @@ impl BottlesApp {
         ui.label(RichText::new(&bottle.config.name).heading());
         ui.monospace(bottle.prefix.display().to_string());
         ui.separator();
-        egui::Grid::new("bottle-metadata").num_columns(2).show(ui, |ui| {
-            ui.label("Environment");
-            ui.label(&bottle.config.environment);
-            ui.end_row();
-            ui.label("Runner");
-            ui.label(&bottle.config.runner);
-            ui.end_row();
-            ui.label("Windows");
-            ui.label(&bottle.config.windows);
-            ui.end_row();
-            ui.label("Architecture");
-            ui.label(&bottle.config.arch);
-            ui.end_row();
-            ui.label("Created");
-            ui.label(&bottle.config.creation_date);
-            ui.end_row();
-            ui.label("Updated");
-            ui.label(&bottle.config.update_date);
-            ui.end_row();
-        });
+        egui::Grid::new("bottle-metadata")
+            .num_columns(2)
+            .show(ui, |ui| {
+                ui.label("Environment");
+                ui.label(&bottle.config.environment);
+                ui.end_row();
+                ui.label("Runner");
+                ui.label(&bottle.config.runner);
+                ui.end_row();
+                ui.label("Windows");
+                ui.label(&bottle.config.windows);
+                ui.end_row();
+                ui.label("Architecture");
+                ui.label(&bottle.config.arch);
+                ui.end_row();
+                ui.label("Created");
+                ui.label(&bottle.config.creation_date);
+                ui.end_row();
+                ui.label("Updated");
+                ui.label(&bottle.config.update_date);
+                ui.end_row();
+            });
     }
 
     fn details_preferences_tab(&mut self, ui: &mut egui::Ui) {
@@ -829,7 +823,11 @@ impl BottlesApp {
         labeled_text(ui, "Rule name", &mut self.state.rule_name);
         labeled_text(ui, "Description", &mut self.state.rule_description);
         ui.label("Registry keys");
-        ui.add(egui::TextEdit::multiline(&mut self.state.rule_keys).desired_rows(8).code_editor());
+        ui.add(
+            egui::TextEdit::multiline(&mut self.state.rule_keys)
+                .desired_rows(8)
+                .code_editor(),
+        );
         ui.horizontal(|ui| {
             if ui.button("Save rule").clicked() {
                 self.state.add_registry_rule();
@@ -849,8 +847,14 @@ impl BottlesApp {
     fn details_versioning_tab(&mut self, ui: &mut egui::Ui, bottle: &Bottle) {
         ui.heading("Versioning");
         ui.label(format!("Versioning enabled: {}", bottle.config.versioning));
-        ui.label(format!("Automatic: {}", bottle.config.parameters.versioning_automatic));
-        ui.label(format!("Compression: {}", bottle.config.parameters.versioning_compression));
+        ui.label(format!(
+            "Automatic: {}",
+            bottle.config.parameters.versioning_automatic
+        ));
+        ui.label(format!(
+            "Compression: {}",
+            bottle.config.parameters.versioning_compression
+        ));
         ui.label("FVS incremental commits remain reference-only in the Python implementation.");
     }
 
@@ -878,7 +882,8 @@ impl BottlesApp {
         labeled_text(ui, "Manual directory", &mut self.state.importer_manual_path);
         if ui.button("Scan manual directory").clicked() {
             let path = PathBuf::from(&self.state.importer_manual_path);
-            self.state.importer_candidates = self.state.context.manager.search_wineprefixes(&[path]);
+            self.state.importer_candidates =
+                self.state.context.manager.search_wineprefixes(&[path]);
         }
         ui.separator();
         let candidates = self.state.importer_candidates.clone();
@@ -961,15 +966,41 @@ impl BottlesApp {
     fn preferences_screen(&mut self, ui: &mut egui::Ui) {
         ui.heading("Preferences");
         ui.checkbox(&mut self.state.context.settings.dark_theme, "Dark theme");
-        ui.checkbox(&mut self.state.context.settings.force_offline, "Force offline");
-        ui.checkbox(&mut self.state.context.settings.notifications, "Notifications");
+        ui.checkbox(
+            &mut self.state.context.settings.force_offline,
+            "Force offline",
+        );
+        ui.checkbox(
+            &mut self.state.context.settings.notifications,
+            "Notifications",
+        );
         ui.checkbox(&mut self.state.context.settings.experiments, "Experiments");
-        ui.checkbox(&mut self.state.context.settings.release_candidate, "Release candidate runners");
-        ui.checkbox(&mut self.state.context.settings.playtime_enabled, "Playtime tracking");
-        ui.checkbox(&mut self.state.context.settings.show_funding, "Show funding dialog");
-        ui.add(egui::Slider::new(&mut self.state.context.settings.font_scale, 1.0..=2.0).text("Font scale"));
-        labeled_text(ui, "UI language", &mut self.state.context.settings.ui_language);
-        labeled_text(ui, "Startup view", &mut self.state.context.settings.startup_view);
+        ui.checkbox(
+            &mut self.state.context.settings.release_candidate,
+            "Release candidate runners",
+        );
+        ui.checkbox(
+            &mut self.state.context.settings.playtime_enabled,
+            "Playtime tracking",
+        );
+        ui.checkbox(
+            &mut self.state.context.settings.show_funding,
+            "Show funding dialog",
+        );
+        ui.add(
+            egui::Slider::new(&mut self.state.context.settings.font_scale, 1.0..=2.0)
+                .text("Font scale"),
+        );
+        labeled_text(
+            ui,
+            "UI language",
+            &mut self.state.context.settings.ui_language,
+        );
+        labeled_text(
+            ui,
+            "Startup view",
+            &mut self.state.context.settings.startup_view,
+        );
         if ui.button("Save preferences").clicked() {
             self.state.save_preferences();
         }
@@ -987,7 +1018,10 @@ impl BottlesApp {
         });
         ui.horizontal(|ui| {
             ui.label("Filter");
-            ui.add(egui::TextEdit::singleline(&mut self.state.parity_search).hint_text("status, source, or feature"));
+            ui.add(
+                egui::TextEdit::singleline(&mut self.state.parity_search)
+                    .hint_text("status, source, or feature"),
+            );
             let selected = self
                 .state
                 .parity_status
@@ -1020,7 +1054,13 @@ impl BottlesApp {
                 let search = if query.is_empty() {
                     String::new()
                 } else {
-                    format!("{} {} {} {}", record.kind, record.id, record.source, record.status.label())
+                    format!(
+                        "{} {} {} {}",
+                        record.kind,
+                        record.id,
+                        record.source,
+                        record.status.label()
+                    )
                 };
                 if !query.is_empty() && !search.to_ascii_lowercase().contains(&query) {
                     continue;

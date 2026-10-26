@@ -177,9 +177,7 @@ impl AppSettings {
             flatpak_migration: store
                 .get_bool("flatpak-migration")
                 .unwrap_or(defaults.flatpak_migration),
-            dark_theme: store
-                .get_bool("dark-theme")
-                .unwrap_or(defaults.dark_theme),
+            dark_theme: store.get_bool("dark-theme").unwrap_or(defaults.dark_theme),
             ui_language: store
                 .get_string("ui-language")
                 .unwrap_or(defaults.ui_language),
@@ -280,22 +278,13 @@ impl AppSettings {
         store.set_gvariant("startup-view", &format_gvariant_string(&self.startup_view))?;
         store.set_gvariant("ui-language", &format_gvariant_string(&self.ui_language))?;
         store.set_gvariant("force-offline", &format_gvariant_bool(self.force_offline))?;
-        store.set_gvariant(
-            "notifications",
-            &format_gvariant_bool(self.notifications),
-        )?;
+        store.set_gvariant("notifications", &format_gvariant_bool(self.notifications))?;
         store.set_gvariant(
             "playtime-enabled",
             &format_gvariant_bool(self.playtime_enabled),
         )?;
-        store.set_gvariant(
-            "show-funding",
-            &format_gvariant_bool(self.show_funding),
-        )?;
-        store.set_gvariant(
-            "experiments",
-            &format_gvariant_bool(self.experiments),
-        )?;
+        store.set_gvariant("show-funding", &format_gvariant_bool(self.show_funding))?;
+        store.set_gvariant("experiments", &format_gvariant_bool(self.experiments))?;
         store.set_gvariant(
             "release-candidate",
             &format_gvariant_bool(self.release_candidate),
@@ -482,10 +471,7 @@ impl UserData {
 
     fn default_values() -> BTreeMap<String, Value> {
         BTreeMap::from([
-            (
-                "funding_dialog_dismissed".to_owned(),
-                Value::Bool(false),
-            ),
+            ("funding_dialog_dismissed".to_owned(), Value::Bool(false)),
             (
                 UserDataKeys::PERSONAL_REPOSITORIES.to_owned(),
                 Value::Mapping(serde_yaml::Mapping::new()),
@@ -531,7 +517,10 @@ impl UserData {
     }
 
     pub fn save(&self) -> Result<()> {
-        let parent = self.path.parent().unwrap_or_else(|| std::path::Path::new("."));
+        let parent = self
+            .path
+            .parent()
+            .unwrap_or_else(|| std::path::Path::new("."));
         fs::create_dir_all(parent).with_path(parent)?;
         let content = serde_yaml::to_string(&self.values)?;
         fs::write(&self.path, content).with_path(&self.path)

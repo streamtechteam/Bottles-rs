@@ -362,7 +362,11 @@ impl UmuRepository {
     ) -> Result<Command> {
         game.validate()?;
         let reserved: HashSet<&str> = RESERVED_ENVIRONMENT_KEYS.iter().copied().collect();
-        if let Some(key) = game.environment.keys().find(|key| reserved.contains(key.as_str())) {
+        if let Some(key) = game
+            .environment
+            .keys()
+            .find(|key| reserved.contains(key.as_str()))
+        {
             return Err(BottlesError::InvalidInput(format!(
                 "Reserved UMU environment variable cannot be overridden: {key}"
             )));
@@ -385,10 +389,12 @@ impl UmuRepository {
         });
         if !install_only {
             command.args(&game.arguments);
-            let install_path = game
-                .working_directory
-                .clone()
-                .unwrap_or_else(|| game.executable.parent().unwrap_or(Path::new("/")).to_path_buf());
+            let install_path = game.working_directory.clone().unwrap_or_else(|| {
+                game.executable
+                    .parent()
+                    .unwrap_or(Path::new("/"))
+                    .to_path_buf()
+            });
             command.env("STEAM_COMPAT_INSTALL_PATH", install_path);
         }
         for key in RESERVED_ENVIRONMENT_KEYS {
@@ -452,7 +458,10 @@ mod tests {
             false,
             false,
         );
-        assert!(repository.prefix_path(&game).unwrap().starts_with(&repository.root));
+        assert!(repository
+            .prefix_path(&game)
+            .unwrap()
+            .starts_with(&repository.root));
         let mut invalid = game.clone();
         invalid.prefix.path = "../escape".to_owned();
         assert!(invalid.validate().is_ok());

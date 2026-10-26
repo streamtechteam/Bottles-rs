@@ -19,9 +19,7 @@ pub mod state;
 pub mod umu;
 pub mod wine;
 
-pub use config::{
-    BottleConfig, BottleParams, BottleSandboxParams, ExternalProgram, RegistryRule,
-};
+pub use config::{BottleConfig, BottleParams, BottleSandboxParams, ExternalProgram, RegistryRule};
 pub use error::{BottlesError, Result};
 pub use manager::{Bottle, BottleManager};
 pub use paths::{Paths, APP_ID, APP_NAME, APP_VERSION};
@@ -69,10 +67,7 @@ impl AppContext {
     /// overrides `XDG_DATA_HOME`.
     pub fn with_paths(paths: Paths) -> Result<Self> {
         paths.ensure_app_dirs()?;
-        let umu_root = paths
-            .clone()
-            .umu
-            .clone();
+        let umu_root = paths.clone().umu.clone();
         Ok(Self {
             manager: BottleManager::new(paths.clone()),
             settings: settings::AppSettings::load(),
@@ -113,7 +108,10 @@ mod tests {
     #[test]
     fn cli_command_surface_matches_python_contract() {
         let contract = parity::contracts().cli.commands.clone();
-        let actual: Vec<String> = contract.iter().map(|command| command.name.clone()).collect();
+        let actual: Vec<String> = contract
+            .iter()
+            .map(|command| command.name.clone())
+            .collect();
         assert_eq!(actual, CLI_COMMANDS);
     }
 
@@ -129,7 +127,8 @@ mod tests {
     #[test]
     fn app_context_can_use_an_isolated_data_root() {
         let mut paths = Paths::detect();
-        paths.base = std::env::temp_dir().join(format!("bottles-rs-context-{}", uuid::Uuid::new_v4()));
+        paths.base =
+            std::env::temp_dir().join(format!("bottles-rs-context-{}", uuid::Uuid::new_v4()));
         paths.bottles = paths.base.join("bottles");
         paths.library = paths.base.join("library.yml");
         paths.journal = paths.base.join("journal.yml");

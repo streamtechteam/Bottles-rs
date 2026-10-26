@@ -371,7 +371,9 @@ mod tests {
         assert!(TaskManager::request_cancel(id));
         TaskManager::remove(id);
         assert!(TaskManager::get(id).is_none());
-        assert!(SignalManager::events().iter().any(|event| event.signal == Signal::TaskAdded));
+        assert!(SignalManager::events()
+            .iter()
+            .any(|event| event.signal == Signal::TaskAdded));
     }
 
     #[test]

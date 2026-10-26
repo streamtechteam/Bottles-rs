@@ -85,11 +85,13 @@ impl Library {
                 "library entries require an id".to_owned(),
             ));
         }
-        if self
-            .entries
-            .values()
-            .any(|value| value.as_mapping().and_then(|mapping| mapping.get(&Value::String("id".to_owned()))).and_then(Value::as_str) == Some(id_value.as_str()))
-        {
+        if self.entries.values().any(|value| {
+            value
+                .as_mapping()
+                .and_then(|mapping| mapping.get(&Value::String("id".to_owned())))
+                .and_then(Value::as_str)
+                == Some(id_value.as_str())
+        }) {
             return Err(crate::error::BottlesError::InvalidInput(format!(
                 "entry `{id_value}` is already in the library"
             )));
@@ -150,7 +152,9 @@ impl Library {
             let Some(mapping) = entry.as_mapping_mut() else {
                 continue;
             };
-            if mapping.get(&Value::String("id".to_owned())).and_then(Value::as_str)
+            if mapping
+                .get(&Value::String("id".to_owned()))
+                .and_then(Value::as_str)
                 == Some(library_id.as_str())
             {
                 for (key, value) in data {
@@ -174,7 +178,8 @@ mod tests {
 
     fn temp_paths(name: &str) -> Paths {
         let mut paths = Paths::detect();
-        paths.base = std::env::temp_dir().join(format!("bottles-rs-{name}-{}", uuid::Uuid::new_v4()));
+        paths.base =
+            std::env::temp_dir().join(format!("bottles-rs-{name}-{}", uuid::Uuid::new_v4()));
         paths.library = paths.base.join("library.yml");
         paths
     }
@@ -184,14 +189,31 @@ mod tests {
         let paths = temp_paths("library");
         let mut library = Library::load(&paths).unwrap();
         let mut valid = Mapping::new();
-        valid.insert(Value::String("id".to_owned()), Value::String("prog-1".to_owned()));
-        valid.insert(Value::String("name".to_owned()), Value::String("Game".to_owned()));
+        valid.insert(
+            Value::String("id".to_owned()),
+            Value::String("prog-1".to_owned()),
+        );
+        valid.insert(
+            Value::String("name".to_owned()),
+            Value::String("Game".to_owned()),
+        );
         let uuid = library.add(valid).unwrap();
         let mut invalid = Mapping::new();
-        invalid.insert(Value::String("id".to_owned()), Value::String("broken".to_owned()));
-        library.entries.insert("orphan".to_owned(), Value::Mapping(invalid));
+        invalid.insert(
+            Value::String("id".to_owned()),
+            Value::String("broken".to_owned()),
+        );
+        library
+            .entries
+            .insert("orphan".to_owned(), Value::Mapping(invalid));
         // Remove id to emulate the Python cleanup rule.
-        library.entries.get_mut("orphan").unwrap().as_mapping_mut().unwrap().remove(&Value::String("id".to_owned()));
+        library
+            .entries
+            .get_mut("orphan")
+            .unwrap()
+            .as_mapping_mut()
+            .unwrap()
+            .remove(&Value::String("id".to_owned()));
         library.save().unwrap();
         library.reload().unwrap();
         assert!(library.entry(&uuid).is_some());
@@ -204,16 +226,29 @@ mod tests {
         let paths = temp_paths("rename");
         let mut library = Library::load(&paths).unwrap();
         let mut bottle = Mapping::new();
-        bottle.insert(Value::String("name".to_owned()), Value::String("Old".to_owned()));
+        bottle.insert(
+            Value::String("name".to_owned()),
+            Value::String("Old".to_owned()),
+        );
         let mut entry = Mapping::new();
-        entry.insert(Value::String("id".to_owned()), Value::String("game".to_owned()));
+        entry.insert(
+            Value::String("id".to_owned()),
+            Value::String("game".to_owned()),
+        );
         entry.insert(Value::String("bottle".to_owned()), Value::Mapping(bottle));
         library.add(entry).unwrap();
         assert_eq!(library.rename_bottle("Old", "New").unwrap(), 1);
         let key = library.entries.keys().next().unwrap().clone();
         let mapping = library.entry(&key).unwrap().as_mapping().unwrap();
-        let bottle = mapping.get(&Value::String("bottle".to_owned())).unwrap().as_mapping().unwrap();
-        assert_eq!(bottle.get(&Value::String("name".to_owned())), Some(&Value::String("New".to_owned())));
+        let bottle = mapping
+            .get(&Value::String("bottle".to_owned()))
+            .unwrap()
+            .as_mapping()
+            .unwrap();
+        assert_eq!(
+            bottle.get(&Value::String("name".to_owned())),
+            Some(&Value::String("New".to_owned()))
+        );
         fs::remove_dir_all(paths.base).unwrap();
     }
 }

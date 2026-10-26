@@ -105,12 +105,8 @@ pub const BOTTLE_PARAMS_FIELDS: &[&str] = &[
     "eagle_tracing",
 ];
 
-pub const BOTTLE_SANDBOX_PARAMS_FIELDS: &[&str] = &[
-    "share_net",
-    "share_sound",
-    "share_input",
-    "share_usb",
-];
+pub const BOTTLE_SANDBOX_PARAMS_FIELDS: &[&str] =
+    &["share_net", "share_sound", "share_input", "share_usb"];
 
 /// Default inherited environment list from `Samples.default_inherited_environment`.
 pub const DEFAULT_INHERITED_ENVIRONMENT: &[&str] = &[
@@ -581,9 +577,7 @@ impl BottleConfig {
             mapping
                 .get_mut(&key_value)
                 .and_then(Value::as_mapping_mut)
-                .ok_or_else(|| {
-                    BottlesError::Config(format!("scope `{scope}` is not a mapping"))
-                })?
+                .ok_or_else(|| BottlesError::Config(format!("scope `{scope}` is not a mapping")))?
         };
         let field = Value::String(key.to_owned());
         if remove {
@@ -721,23 +715,32 @@ fn migrate_config_value(value: &mut Value) -> Result<()> {
     let inherited_key = Value::String("Inherited_Environment_Variables".to_owned());
     if limit {
         if let Some(inherited) = root.get(&inherited_key).and_then(sequence_as_strings) {
-            if legacy_inherited_environments()
-                .iter()
-                .any(|candidate| candidate.iter().map(|item| (*item).to_owned()).collect::<Vec<_>>() == inherited)
-            {
+            if legacy_inherited_environments().iter().any(|candidate| {
+                candidate
+                    .iter()
+                    .map(|item| (*item).to_owned())
+                    .collect::<Vec<_>>()
+                    == inherited
+            }) {
                 let mut updated = inherited;
                 for name in ["XMODIFIERS", "XDG_CONFIG_HOME"] {
                     if !updated.iter().any(|item| item == name) {
                         updated.push(name.to_owned());
                     }
                 }
-                root.insert(inherited_key, Value::Sequence(updated.into_iter().map(Value::String).collect()));
+                root.insert(
+                    inherited_key,
+                    Value::Sequence(updated.into_iter().map(Value::String).collect()),
+                );
             }
         }
     }
 
     let parameters_key = Value::String("Parameters".to_owned());
-    if let Some(parameters) = root.get_mut(&parameters_key).and_then(Value::as_mapping_mut) {
+    if let Some(parameters) = root
+        .get_mut(&parameters_key)
+        .and_then(Value::as_mapping_mut)
+    {
         let fsr_level = Value::String("fsr_level".to_owned());
         if let Some(value) = parameters.remove(&fsr_level) {
             parameters.insert(Value::String("fsr_sharpening_strength".to_owned()), value);
@@ -745,10 +748,7 @@ fn migrate_config_value(value: &mut Value) -> Result<()> {
         parameters.remove(&Value::String("show_component_updates".to_owned()));
     }
 
-    for (old, new) in [
-        ("DXVK_NVAPI", "NVAPI"),
-        ("LatencyFlex", "LatencyFleX"),
-    ] {
+    for (old, new) in [("DXVK_NVAPI", "NVAPI"), ("LatencyFlex", "LatencyFleX")] {
         let old_key = Value::String(old.to_owned());
         if let Some(value) = root.remove(&old_key) {
             root.insert(Value::String(new.to_owned()), value);
@@ -777,9 +777,7 @@ pub fn json_value_to_yaml(value: &serde_json::Value) -> Value {
         serde_json::Value::Object(values) => Value::Mapping(
             values
                 .iter()
-                .map(|(key, value)| {
-                    (Value::String(key.clone()), json_value_to_yaml(value))
-                })
+                .map(|(key, value)| (Value::String(key.clone()), json_value_to_yaml(value)))
                 .collect(),
         ),
     }
@@ -862,7 +860,9 @@ Unexpected: ignored
         let mut legacy: Vec<&str> = DEFAULT_INHERITED_ENVIRONMENT
             .iter()
             .copied()
-            .filter(|item| *item != "XDG_CONFIG_HOME" && *item != "XCURSOR_SIZE" && *item != "XMODIFIERS")
+            .filter(|item| {
+                *item != "XDG_CONFIG_HOME" && *item != "XCURSOR_SIZE" && *item != "XMODIFIERS"
+            })
             .collect();
         // The Python legacy list also omitted XDG_CONFIG_HOME.
         legacy.retain(|item| *item != "XDG_CONFIG_HOME");
@@ -872,12 +872,21 @@ Unexpected: ignored
         .unwrap();
         root.as_mapping_mut().unwrap().insert(
             Value::String("Inherited_Environment_Variables".to_owned()),
-            Value::Sequence(legacy.iter().map(|item| Value::String((*item).to_owned())).collect()),
+            Value::Sequence(
+                legacy
+                    .iter()
+                    .map(|item| Value::String((*item).to_owned()))
+                    .collect(),
+            ),
         );
         migrate_config_value(&mut root).unwrap();
         let config: BottleConfig = serde_yaml::from_value(root).unwrap();
-        assert!(config.inherited_environment_variables.contains(&"XDG_CONFIG_HOME".to_owned()));
-        assert!(config.inherited_environment_variables.contains(&"XMODIFIERS".to_owned()));
+        assert!(config
+            .inherited_environment_variables
+            .contains(&"XDG_CONFIG_HOME".to_owned()));
+        assert!(config
+            .inherited_environment_variables
+            .contains(&"XMODIFIERS".to_owned()));
     }
 
     #[test]
@@ -895,7 +904,9 @@ Unexpected: ignored
         config
             .update_value("Parameters", "dxvk", Some(Value::Bool(true)), false)
             .unwrap();
-        config.set_environment_variable("WINEDEBUG", "-all").unwrap();
+        config
+            .set_environment_variable("WINEDEBUG", "-all")
+            .unwrap();
         assert_eq!(config.name, "Test");
         assert!(config.parameters.dxvk);
         assert_eq!(

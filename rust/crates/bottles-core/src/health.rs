@@ -139,8 +139,14 @@ fn disk_usage() -> (u64, u64) {
     let output = command_stdout("df", &["-B1", "/"]).unwrap_or_default();
     let line = output.lines().nth(1).unwrap_or_default();
     let parts: Vec<&str> = line.split_whitespace().collect();
-    let total = parts.get(1).and_then(|value| value.parse::<u64>().ok()).unwrap_or(0);
-    let free = parts.get(3).and_then(|value| value.parse::<u64>().ok()).unwrap_or(0);
+    let total = parts
+        .get(1)
+        .and_then(|value| value.parse::<u64>().ok())
+        .unwrap_or(0);
+    let free = parts
+        .get(3)
+        .and_then(|value| value.parse::<u64>().ok())
+        .unwrap_or(0);
     (total, free)
 }
 

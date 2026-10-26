@@ -251,7 +251,9 @@ fn has_windows_unsafe_component(path: &Path) -> bool {
     let absolute = if path.is_absolute() {
         path.to_path_buf()
     } else {
-        env::current_dir().unwrap_or_else(|_| PathBuf::from("/")).join(path)
+        env::current_dir()
+            .unwrap_or_else(|_| PathBuf::from("/"))
+            .join(path)
     };
     absolute.components().any(|part| match part {
         Component::Normal(value) => {
@@ -320,7 +322,9 @@ fn lsfg_vk_version() -> u8 {
     );
     directories.insert(
         0,
-        Paths::detect().xdg_data_home.join("vulkan/implicit_layer.d"),
+        Paths::detect()
+            .xdg_data_home
+            .join("vulkan/implicit_layer.d"),
     );
     let manifest_v2 = "VkLayer_LSFGVK_frame_generation.json";
     let manifest_v1 = "VkLayer_LS_frame_generation.json";
@@ -351,7 +355,10 @@ fn base_version() -> String {
         .get("base-version")
         .and_then(|value| value.as_str())
         .unwrap_or_default();
-    version.strip_prefix("stable-").unwrap_or(version).to_owned()
+    version
+        .strip_prefix("stable-")
+        .unwrap_or(version)
+        .to_owned()
 }
 
 impl ToolAvailability {
@@ -427,13 +434,12 @@ pub fn sanitize_universal_filename(input: &str) -> String {
 pub fn validate_bottle_name(name: &str) -> Result<String> {
     let trimmed = name.trim();
     if trimmed.is_empty() {
-        return Err(io_error(
-            "bottle name",
-            "Bottle name cannot be empty.",
-        ));
+        return Err(io_error("bottle name", "Bottle name cannot be empty."));
     }
     if trimmed.contains('/') || trimmed.contains('\\') || trimmed.contains('\0') {
-        return Err(BottlesErrorConfig::invalid("Bottle name contains a path separator."));
+        return Err(BottlesErrorConfig::invalid(
+            "Bottle name contains a path separator.",
+        ));
     }
     let sanitized = sanitize_universal_filename(&trimmed.replace(' ', "-"));
     if sanitized == "_" {

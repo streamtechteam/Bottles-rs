@@ -2,7 +2,9 @@ use crate::config::{
     BottleConfig, CustomPath, EnvironmentTemplate, ExternalProgram, DEFAULT_INHERITED_ENVIRONMENT,
 };
 use crate::error::{BottlesError, IoResultExt, Result};
-use crate::paths::{sanitize_universal_filename, validate_bottle_name, ComponentKind, LegacyPaths, Paths};
+use crate::paths::{
+    sanitize_universal_filename, validate_bottle_name, ComponentKind, LegacyPaths, Paths,
+};
 use crate::wine::{WineLauncher, WineTool};
 use chrono::Local;
 use serde_yaml::Value;
@@ -220,8 +222,12 @@ impl BottleManager {
         config.name = options.name.clone();
         config.arch = options.arch.clone();
         config.runner = options.runner.unwrap_or_else(|| self.latest_runner());
-        config.d7vk = options.d7vk.unwrap_or_else(|| self.first_component(ComponentKind::D7Vk));
-        config.dxvk = options.dxvk.unwrap_or_else(|| self.first_component(ComponentKind::Dxvk));
+        config.d7vk = options
+            .d7vk
+            .unwrap_or_else(|| self.first_component(ComponentKind::D7Vk));
+        config.dxvk = options
+            .dxvk
+            .unwrap_or_else(|| self.first_component(ComponentKind::Dxvk));
         config.vkd3d = options
             .vkd3d
             .unwrap_or_else(|| self.first_component(ComponentKind::Vkd3d));
@@ -339,7 +345,8 @@ impl BottleManager {
 
     pub fn repair_bottle(&self, name: &str) -> Result<()> {
         let bottle = self.get_bottle(name)?;
-        fs::create_dir_all(bottle.prefix.join("drive_c")).with_path(bottle.prefix.join("drive_c"))?;
+        fs::create_dir_all(bottle.prefix.join("drive_c"))
+            .with_path(bottle.prefix.join("drive_c"))?;
         let launcher = WineLauncher::new(self.paths.clone(), bottle.config.clone(), bottle.prefix);
         let plan = launcher.tool_plan(WineTool::Wineboot, &["-u".to_owned()])?;
         launcher.spawn(&plan)?;
@@ -376,12 +383,11 @@ impl BottleManager {
             (executable, folder)
         } else if is_windows_path(path) {
             let normalized = path.replace('\\', "/");
-            let executable = normalized
-                .rsplit('/')
-                .next()
-                .unwrap_or_default()
-                .to_owned();
-            let parent = normalized.rsplit_once('/').map(|(left, _)| left).unwrap_or("");
+            let executable = normalized.rsplit('/').next().unwrap_or_default().to_owned();
+            let parent = normalized
+                .rsplit_once('/')
+                .map(|(left, _)| left)
+                .unwrap_or("");
             let mut relative = parent.replace("C:/", "/drive_c/");
             if relative.starts_with('/') {
                 relative.remove(0);
@@ -402,7 +408,11 @@ impl BottleManager {
             folder: Some(folder),
             icon: Some(String::new()),
             arguments: Some(launch_options.unwrap_or_default().to_owned()),
-            dxvk: Some(if no_dxvk { false } else { bottle.config.parameters.dxvk }),
+            dxvk: Some(if no_dxvk {
+                false
+            } else {
+                bottle.config.parameters.dxvk
+            }),
             vkd3d: Some(if no_vkd3d {
                 false
             } else {
@@ -416,10 +426,7 @@ impl BottleManager {
             d7vk: no_d7vk.then_some(false),
             ..ExternalProgram::default()
         };
-        bottle
-            .config
-            .external_programs
-            .insert(id.clone(), program);
+        bottle.config.external_programs.insert(id.clone(), program);
         self.save_config(&bottle)?;
         Ok(id)
     }
@@ -446,7 +453,10 @@ impl BottleManager {
             ComponentKind::Nvapi,
             ComponentKind::LatencyFlex,
         ] {
-            result.insert(kind.key().to_owned(), list_directories(&self.paths.component_directory(kind)));
+            result.insert(
+                kind.key().to_owned(),
+                list_directories(&self.paths.component_directory(kind)),
+            );
         }
         result
     }
@@ -696,7 +706,10 @@ fn list_subdirectories(path: &Path) -> Vec<PathBuf> {
 
 fn copy_directory(source: &Path, destination: &Path) -> Result<()> {
     fs::create_dir_all(destination).with_path(destination)?;
-    for entry in fs::read_dir(source).with_path(source)?.filter_map(|entry| entry.ok()) {
+    for entry in fs::read_dir(source)
+        .with_path(source)?
+        .filter_map(|entry| entry.ok())
+    {
         let from = entry.path();
         let to = destination.join(entry.file_name());
         let metadata = fs::symlink_metadata(&from).with_path(&from)?;
@@ -725,8 +738,12 @@ fn copy_directory(source: &Path, destination: &Path) -> Result<()> {
 }
 
 fn natural_version_cmp(left: &str, right: &str) -> std::cmp::Ordering {
-    let left_parts = left.split(|c: char| !c.is_ascii_alphanumeric()).collect::<Vec<_>>();
-    let right_parts = right.split(|c: char| !c.is_ascii_alphanumeric()).collect::<Vec<_>>();
+    let left_parts = left
+        .split(|c: char| !c.is_ascii_alphanumeric())
+        .collect::<Vec<_>>();
+    let right_parts = right
+        .split(|c: char| !c.is_ascii_alphanumeric())
+        .collect::<Vec<_>>();
     for (a, b) in left_parts.iter().zip(right_parts.iter()) {
         match (a.parse::<u64>(), b.parse::<u64>()) {
             (Ok(a), Ok(b)) => {
@@ -743,7 +760,10 @@ fn natural_version_cmp(left: &str, right: &str) -> std::cmp::Ordering {
             }
         }
     }
-    left_parts.len().cmp(&right_parts.len()).then_with(|| left.cmp(right))
+    left_parts
+        .len()
+        .cmp(&right_parts.len())
+        .then_with(|| left.cmp(right))
 }
 
 fn is_unix_path(path: &str) -> bool {
@@ -764,7 +784,8 @@ mod tests {
 
     fn temp_paths(name: &str) -> Paths {
         let mut paths = Paths::detect();
-        paths.base = std::env::temp_dir().join(format!("bottles-rs-{name}-{}", uuid::Uuid::new_v4()));
+        paths.base =
+            std::env::temp_dir().join(format!("bottles-rs-{name}-{}", uuid::Uuid::new_v4()));
         paths.bottles = paths.base.join("bottles");
         paths.runners = paths.base.join("runners");
         paths.temp = paths.base.join("temp");
@@ -817,10 +838,16 @@ mod tests {
         let paths = temp_paths("prefix");
         let mut config = BottleConfig::default();
         config.path = "example".to_owned();
-        assert_eq!(bottle_prefix_path(&paths, &config), paths.bottles.join("example"));
+        assert_eq!(
+            bottle_prefix_path(&paths, &config),
+            paths.bottles.join("example")
+        );
         config.custom_path = CustomPath::Bool(true);
         config.path = "/mnt/games/example".to_owned();
-        assert_eq!(bottle_prefix_path(&paths, &config), PathBuf::from("/mnt/games/example"));
+        assert_eq!(
+            bottle_prefix_path(&paths, &config),
+            PathBuf::from("/mnt/games/example")
+        );
         config.environment = "Steam".to_owned();
         config.compat_data = "123".to_owned();
         assert_eq!(bottle_prefix_path(&paths, &config), paths.steam.join("123"));

@@ -58,7 +58,10 @@ impl RegistryRuleManager {
         .filter(|rule| match trigger {
             Some(trigger) => {
                 rule.triggers.is_empty()
-                    || rule.triggers.iter().any(|value| value == trigger || value == "all")
+                    || rule
+                        .triggers
+                        .iter()
+                        .any(|value| value == trigger || value == "all")
             }
             None => true,
         })
@@ -130,7 +133,10 @@ mod tests {
             },
         );
         assert_eq!(RegistryRuleManager::list_rules(&config).len(), 1);
-        assert_eq!(RegistryRuleManager::list_rules(&config)[0].description, "Updated");
+        assert_eq!(
+            RegistryRuleManager::list_rules(&config)[0].description,
+            "Updated"
+        );
         assert!(RegistryRuleManager::delete_rule(&mut config, "fsr"));
         assert!(RegistryRuleManager::list_rules(&config).is_empty());
     }

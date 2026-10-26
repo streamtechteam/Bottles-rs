@@ -105,12 +105,16 @@ impl Journal {
                     .as_mapping()?
                     .get(&Value::String("timestamp".to_owned()))?
                     .as_str()?;
-                let parsed = NaiveDateTime::parse_from_str(timestamp, JOURNAL_TIMESTAMP_FORMAT).ok()?;
+                let parsed =
+                    NaiveDateTime::parse_from_str(timestamp, JOURNAL_TIMESTAMP_FORMAT).ok()?;
                 Some((id, value, parsed))
             })
             .collect();
         sorted.sort_by(|left, right| right.2.cmp(&left.2).then_with(|| left.0.cmp(&right.0)));
-        Ok(sorted.into_iter().map(|(id, value, _)| (id, value)).collect())
+        Ok(sorted
+            .into_iter()
+            .map(|(id, value, _)| (id, value))
+            .collect())
     }
 
     pub fn save_entries(&self, entries: &BTreeMap<String, Value>) -> Result<()> {
@@ -158,7 +162,8 @@ impl Journal {
                     .as_mapping()?
                     .get(&Value::String("timestamp".to_owned()))?
                     .as_str()?;
-                let parsed = NaiveDateTime::parse_from_str(timestamp, JOURNAL_TIMESTAMP_FORMAT).ok()?;
+                let parsed =
+                    NaiveDateTime::parse_from_str(timestamp, JOURNAL_TIMESTAMP_FORMAT).ok()?;
                 (parsed < cutoff).then(|| id.clone())
             })
             .collect();
@@ -217,10 +222,14 @@ impl Journal {
             else {
                 continue;
             };
-            let Ok(parsed) = NaiveDateTime::parse_from_str(timestamp, JOURNAL_TIMESTAMP_FORMAT) else {
+            let Ok(parsed) = NaiveDateTime::parse_from_str(timestamp, JOURNAL_TIMESTAMP_FORMAT)
+            else {
                 continue;
             };
-            if earliest.map(|current: NaiveDateTime| parsed < current).unwrap_or(true) {
+            if earliest
+                .map(|current: NaiveDateTime| parsed < current)
+                .unwrap_or(true)
+            {
                 earliest = Some(parsed);
             }
         }
@@ -253,7 +262,8 @@ mod tests {
 
     fn temp_journal(name: &str) -> (Paths, Journal) {
         let mut paths = Paths::detect();
-        paths.base = std::env::temp_dir().join(format!("bottles-rs-{name}-{}", uuid::Uuid::new_v4()));
+        paths.base =
+            std::env::temp_dir().join(format!("bottles-rs-{name}-{}", uuid::Uuid::new_v4()));
         paths.journal = paths.base.join("journal.yml");
         let journal = Journal::load(&paths).unwrap();
         (paths, journal)

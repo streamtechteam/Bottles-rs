@@ -69,7 +69,10 @@ pub fn io_error(path: impl AsRef<Path>, message: impl Into<String>) -> BottlesEr
     }
 }
 
-pub fn feature_not_ported(feature: impl Into<String>, reference: impl Into<String>) -> BottlesError {
+pub fn feature_not_ported(
+    feature: impl Into<String>,
+    reference: impl Into<String>,
+) -> BottlesError {
     BottlesError::FeatureNotPorted {
         feature: feature.into(),
         reference: reference.into(),

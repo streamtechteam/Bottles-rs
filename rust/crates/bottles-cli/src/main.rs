@@ -411,7 +411,15 @@ fn run(cli: Cli) -> Result<()> {
             value,
             data,
             key_type,
-        } => manage_reg(&context, &bottle, action, &key, &value, data.as_deref(), key_type),
+        } => manage_reg(
+            &context,
+            &bottle,
+            action,
+            &key,
+            &value,
+            data.as_deref(),
+            key_type,
+        ),
         Commands::RegRules {
             action,
             bottle,
@@ -488,7 +496,11 @@ fn run(cli: Cli) -> Result<()> {
             if json {
                 print_json(&bottle.config)?;
             } else {
-                println!("Bottle '{}' created at {}", bottle.config.name, bottle.prefix.display());
+                println!(
+                    "Bottle '{}' created at {}",
+                    bottle.config.name,
+                    bottle.prefix.display()
+                );
             }
             Ok(())
         }
@@ -714,7 +726,10 @@ fn manage_reg_rules(
                     } else {
                         rule.triggers.join(", ")
                     };
-                    println!("{}: {} (triggers: {})", rule.name, rule.description, triggers);
+                    println!(
+                        "{}: {} (triggers: {})",
+                        rule.name, rule.description, triggers
+                    );
                 }
             }
             Ok(())
@@ -750,9 +765,8 @@ fn manage_reg_rules(
             context.manager.save_config(&bottle)
         }
         RegRulesAction::Delete => {
-            let name = name.ok_or_else(|| {
-                BottlesError::InvalidInput("--name is required".to_owned())
-            })?;
+            let name =
+                name.ok_or_else(|| BottlesError::InvalidInput("--name is required".to_owned()))?;
             if RegistryRuleManager::delete_rule(&mut bottle.config, name) {
                 context.manager.save_config(&bottle)?;
             }
@@ -811,9 +825,9 @@ fn edit_bottle(
         }
     }
     if let Some(env_var) = env_var {
-        let (key, value) = env_var.split_once('=').ok_or_else(|| {
-            BottlesError::InvalidInput("--env-var requires KEY=VALUE".to_owned())
-        })?;
+        let (key, value) = env_var
+            .split_once('=')
+            .ok_or_else(|| BottlesError::InvalidInput("--env-var requires KEY=VALUE".to_owned()))?;
         bottle.config.set_environment_variable(key, value)?;
         changed = true;
     }
@@ -930,7 +944,9 @@ fn autostart(context: &AppContext) -> Result<()> {
 }
 
 fn stop_bottle(context: &AppContext, bottle_name: &str) -> Result<()> {
-    let bottle = context.manager.get_bottle(trim_matching_quotes(bottle_name))?;
+    let bottle = context
+        .manager
+        .get_bottle(trim_matching_quotes(bottle_name))?;
     let launcher = launcher(context, &bottle);
     let kill = launcher.tool_plan(WineTool::Wineserver, &["-k".to_owned()])?;
     launcher.execute(&kill)?;
@@ -1039,9 +1055,10 @@ fn manage_umu(
             sandbox,
             share_network,
         );
-        new_game
-            .extra
-            .insert("dependency_tool".to_owned(), YamlValue::String(settings.umu_dependency_tool));
+        new_game.extra.insert(
+            "dependency_tool".to_owned(),
+            YamlValue::String(settings.umu_dependency_tool),
+        );
         new_game.extra.insert(
             "source_mode".to_owned(),
             YamlValue::String(
@@ -1060,9 +1077,10 @@ fn manage_umu(
         }
         .to_owned();
         if action_variant_eq(action, UmuAction::Install) {
-            new_game
-                .extra
-                .insert("installer".to_owned(), YamlValue::String(executable.to_string_lossy().into_owned()));
+            new_game.extra.insert(
+                "installer".to_owned(),
+                YamlValue::String(executable.to_string_lossy().into_owned()),
+            );
         }
         repository.save(&new_game)?;
         println!("{}", new_game.id);
@@ -1096,19 +1114,23 @@ fn manage_umu(
             print_json(&status)?;
         } else {
             for (key, value) in status.as_object().unwrap() {
-                println!("{key}: {}", match value {
-                    JsonValue::String(value) => value.clone(),
-                    other => other.to_string(),
-                });
+                println!(
+                    "{key}: {}",
+                    match value {
+                        JsonValue::String(value) => value.clone(),
+                        other => other.to_string(),
+                    }
+                );
             }
         }
         return Ok(());
     }
 
     if action_variant_eq(action, UmuAction::SetExecutable) {
-        let executable = absolute_existing_path(executable.ok_or_else(|| {
-            BottlesError::InvalidInput("--executable is required".to_owned())
-        })?)?;
+        let executable =
+            absolute_existing_path(executable.ok_or_else(|| {
+                BottlesError::InvalidInput("--executable is required".to_owned())
+            })?)?;
         let mut game = game;
         game.executable = executable;
         game.state = "ready".to_owned();
@@ -1165,7 +1187,11 @@ fn find_umu_game(repository: &UmuRepository, query: Option<&str>) -> Result<UmuG
 
 fn absolute_existing_path(value: &str) -> Result<PathBuf> {
     let expanded = if let Some(rest) = value.strip_prefix("~/") {
-        Paths::detect().xdg_data_home.parent().map(|home| home.join(rest)).unwrap_or_else(|| PathBuf::from(value))
+        Paths::detect()
+            .xdg_data_home
+            .parent()
+            .map(|home| home.join(rest))
+            .unwrap_or_else(|| PathBuf::from(value))
     } else {
         PathBuf::from(value)
     };
@@ -1186,7 +1212,11 @@ fn absolute_existing_path(value: &str) -> Result<PathBuf> {
 }
 
 fn launcher(context: &AppContext, bottle: &Bottle) -> WineLauncher {
-    WineLauncher::new(context.paths.clone(), bottle.config.clone(), bottle.prefix.clone())
+    WineLauncher::new(
+        context.paths.clone(),
+        bottle.config.clone(),
+        bottle.prefix.clone(),
+    )
 }
 
 fn restart_wineserver(context: &AppContext, bottle: &Bottle) -> Result<()> {
@@ -1323,7 +1353,10 @@ mod tests {
             .map(|value| value.get_name().to_owned())
             .collect();
         for expected in bottles_core::CLI_COMMANDS {
-            assert!(subcommands.contains(&expected.to_string()), "missing {expected}");
+            assert!(
+                subcommands.contains(&expected.to_string()),
+                "missing {expected}"
+            );
         }
         assert_eq!(subcommands.len(), bottles_core::CLI_COMMANDS.len());
     }

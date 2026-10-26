@@ -1,0 +1,579 @@
+{
+  "source": "bottles/backend/models/config.py",
+  "bottle_config": [
+    {
+      "name": "Name",
+      "python_type": "str",
+      "default": "",
+      "default_factory": false
+    },
+    {
+      "name": "Arch",
+      "python_type": "str",
+      "default": "win64",
+      "default_factory": false
+    },
+    {
+      "name": "Windows",
+      "python_type": "str",
+      "default": "win10",
+      "default_factory": false
+    },
+    {
+      "name": "Runner",
+      "python_type": "str",
+      "default": "",
+      "default_factory": false
+    },
+    {
+      "name": "WorkingDir",
+      "python_type": "str",
+      "default": "",
+      "default_factory": false
+    },
+    {
+      "name": "D7VK",
+      "python_type": "str",
+      "default": "",
+      "default_factory": false
+    },
+    {
+      "name": "DXVK",
+      "python_type": "str",
+      "default": "",
+      "default_factory": false
+    },
+    {
+      "name": "NVAPI",
+      "python_type": "str",
+      "default": "",
+      "default_factory": false
+    },
+    {
+      "name": "VKD3D",
+      "python_type": "str",
+      "default": "",
+      "default_factory": false
+    },
+    {
+      "name": "LatencyFleX",
+      "python_type": "str",
+      "default": "",
+      "default_factory": false
+    },
+    {
+      "name": "Path",
+      "python_type": "str",
+      "default": "",
+      "default_factory": false
+    },
+    {
+      "name": "Custom_Path",
+      "python_type": "str",
+      "default": "",
+      "default_factory": false
+    },
+    {
+      "name": "Environment",
+      "python_type": "str",
+      "default": "",
+      "default_factory": false
+    },
+    {
+      "name": "Creation_Date",
+      "python_type": "str",
+      "default": "",
+      "default_factory": false
+    },
+    {
+      "name": "Update_Date",
+      "python_type": "str",
+      "default": "",
+      "default_factory": false
+    },
+    {
+      "name": "Versioning",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "Versioning_Exclusion_Patterns",
+      "python_type": "list",
+      "default": [],
+      "default_factory": true
+    },
+    {
+      "name": "State",
+      "python_type": "int",
+      "default": 0,
+      "default_factory": false
+    },
+    {
+      "name": "Parameters",
+      "python_type": "BottleParams",
+      "default": "BottleParams()",
+      "default_factory": true
+    },
+    {
+      "name": "Sandbox",
+      "python_type": "BottleSandboxParams",
+      "default": {},
+      "default_factory": true
+    },
+    {
+      "name": "Limit_System_Environment",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "Environment_Variables",
+      "python_type": "dict",
+      "default": {},
+      "default_factory": true
+    },
+    {
+      "name": "Inherited_Environment_Variables",
+      "python_type": "List[str]",
+      "default": [],
+      "default_factory": true
+    },
+    {
+      "name": "Installed_Dependencies",
+      "python_type": "List[str]",
+      "default": [],
+      "default_factory": true
+    },
+    {
+      "name": "DLL_Overrides",
+      "python_type": "dict",
+      "default": {},
+      "default_factory": true
+    },
+    {
+      "name": "External_Programs",
+      "python_type": "Dict[str, dict]",
+      "default": {},
+      "default_factory": true
+    },
+    {
+      "name": "Uninstallers",
+      "python_type": "dict",
+      "default": {},
+      "default_factory": true
+    },
+    {
+      "name": "Registry_Rules",
+      "python_type": "list",
+      "default": [],
+      "default_factory": true
+    },
+    {
+      "name": "session_arguments",
+      "python_type": "str",
+      "default": "",
+      "default_factory": false
+    },
+    {
+      "name": "run_in_terminal",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "Language",
+      "python_type": "str",
+      "default": "sys",
+      "default_factory": false
+    },
+    {
+      "name": "Winebridge",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "CompatData",
+      "python_type": "str",
+      "default": "",
+      "default_factory": false
+    },
+    {
+      "name": "data",
+      "python_type": "dict",
+      "default": {},
+      "default_factory": true
+    },
+    {
+      "name": "RunnerPath",
+      "python_type": "str",
+      "default": "",
+      "default_factory": false
+    }
+  ],
+  "bottle_params": [
+    {
+      "name": "d7vk",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "dxvk",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "dxvk_nvapi",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "vkd3d",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "latencyflex",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "mangohud",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "mangohud_display_on_game_start",
+      "python_type": "bool",
+      "default": true,
+      "default_factory": false
+    },
+    {
+      "name": "obsvkc",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "vkbasalt",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "lsfg_vk",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "lsfg_vk_multiplier",
+      "python_type": "int",
+      "default": 2,
+      "default_factory": false
+    },
+    {
+      "name": "lsfg_vk_flow_scale",
+      "python_type": "float",
+      "default": 1.0,
+      "default_factory": false
+    },
+    {
+      "name": "lsfg_vk_performance_mode",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "gamemode",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "gamescope",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "gamescope_game_width",
+      "python_type": "int",
+      "default": 0,
+      "default_factory": false
+    },
+    {
+      "name": "gamescope_game_height",
+      "python_type": "int",
+      "default": 0,
+      "default_factory": false
+    },
+    {
+      "name": "gamescope_window_width",
+      "python_type": "int",
+      "default": 0,
+      "default_factory": false
+    },
+    {
+      "name": "gamescope_window_height",
+      "python_type": "int",
+      "default": 0,
+      "default_factory": false
+    },
+    {
+      "name": "gamescope_fps",
+      "python_type": "int",
+      "default": 0,
+      "default_factory": false
+    },
+    {
+      "name": "gamescope_fps_no_focus",
+      "python_type": "int",
+      "default": 0,
+      "default_factory": false
+    },
+    {
+      "name": "gamescope_scaling",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "gamescope_borderless",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "gamescope_fullscreen",
+      "python_type": "bool",
+      "default": true,
+      "default_factory": false
+    },
+    {
+      "name": "gamescope_custom_options",
+      "python_type": "str",
+      "default": "",
+      "default_factory": false
+    },
+    {
+      "name": "sync",
+      "python_type": "str",
+      "default": "wine",
+      "default_factory": false
+    },
+    {
+      "name": "frame_rate_limit",
+      "python_type": "int",
+      "default": 0,
+      "default_factory": false
+    },
+    {
+      "name": "hidraw_devices",
+      "python_type": "list[str]",
+      "default": [],
+      "default_factory": true
+    },
+    {
+      "name": "fsr",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "fsr_sharpening_strength",
+      "python_type": "int",
+      "default": 8,
+      "default_factory": false
+    },
+    {
+      "name": "custom_dpi",
+      "python_type": "int",
+      "default": 96,
+      "default_factory": false
+    },
+    {
+      "name": "renderer",
+      "python_type": "str",
+      "default": "gl",
+      "default_factory": false
+    },
+    {
+      "name": "discrete_gpu",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "virtual_desktop",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "virtual_desktop_res",
+      "python_type": "str",
+      "default": "1280x720",
+      "default_factory": false
+    },
+    {
+      "name": "wayland",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "hdr",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "pulseaudio_latency",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "fullscreen_capture",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "take_focus",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "mouse_warp",
+      "python_type": "bool",
+      "default": true,
+      "default_factory": false
+    },
+    {
+      "name": "decorated",
+      "python_type": "bool",
+      "default": true,
+      "default_factory": false
+    },
+    {
+      "name": "fixme_logs",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "use_runtime",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "use_eac_runtime",
+      "python_type": "bool",
+      "default": true,
+      "default_factory": false
+    },
+    {
+      "name": "use_be_runtime",
+      "python_type": "bool",
+      "default": true,
+      "default_factory": false
+    },
+    {
+      "name": "use_steam_runtime",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "winebridge",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "sandbox",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "versioning_compression",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "versioning_automatic",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "versioning_exclusion_patterns",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "vmtouch",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "vmtouch_cache_cwd",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "adaptive_launch",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "eagle_tracing",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    }
+  ],
+  "bottle_sandbox_params": [
+    {
+      "name": "share_net",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "share_sound",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "share_input",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    },
+    {
+      "name": "share_usb",
+      "python_type": "bool",
+      "default": false,
+      "default_factory": false
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+[package]
+name = "bottles-gui"
+description = "egui/eframe front end for the Rust port of Bottles"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[[bin]]
+name = "bottles"
+path = "src/main.rs"
+
+[lints]
+workspace = true
+
+[dependencies]
+bottles-core.workspace = true
+eframe.workspace = true
+env_logger.workspace = true
+log.workspace = true
+serde_json.workspace = true
+serde_yaml.workspace = true

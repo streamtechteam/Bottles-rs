@@ -1,0 +1,236 @@
+{
+  "source": "data/com.usebottles.bottles.gschema.xml",
+  "keys": [
+    {
+      "name": "flatpak-migration",
+      "type": "b",
+      "default": "true",
+      "summary": "Flatpak migration",
+      "description": "Toggle the Flatpak migration dialog."
+    },
+    {
+      "name": "dark-theme",
+      "type": "b",
+      "default": "false",
+      "summary": "Dark theme",
+      "description": "Force the use of dark theme."
+    },
+    {
+      "name": "ui-language",
+      "type": "s",
+      "default": "system",
+      "summary": "Application language",
+      "description": "Choose the language used by the Bottles interface."
+    },
+    {
+      "name": "force-offline",
+      "type": "b",
+      "default": "false",
+      "summary": "Force Offline",
+      "description": "\"Force disable any network activity even with available network connection.\""
+    },
+    {
+      "name": "update-date",
+      "type": "b",
+      "default": "false",
+      "summary": "Toggle update date in list",
+      "description": "Toggle the update date in list of bottles."
+    },
+    {
+      "name": "bottle-order",
+      "type": "as",
+      "default": [],
+      "summary": "Bottle order",
+      "description": "Store the custom order of bottles in the list."
+    },
+    {
+      "name": "font-scale",
+      "type": "d",
+      "default": 1.0,
+      "summary": "Application font scale",
+      "description": "Scale Bottles text relative to the system font size."
+    },
+    {
+      "name": "steam-programs",
+      "type": "b",
+      "default": "true",
+      "summary": "Steam apps listing",
+      "description": "Toggle steam apps listing."
+    },
+    {
+      "name": "epic-games",
+      "type": "b",
+      "default": "true",
+      "summary": "Epic Games listing",
+      "description": "Toggle epic games listing."
+    },
+    {
+      "name": "ubisoft-connect",
+      "type": "b",
+      "default": "true",
+      "summary": "Ubisoft Connect listing",
+      "description": "Toggle ubisoft connect listing."
+    },
+    {
+      "name": "window-width",
+      "type": "i",
+      "default": 880,
+      "summary": "Window width",
+      "description": "Change the window width."
+    },
+    {
+      "name": "window-height",
+      "type": "i",
+      "default": 640,
+      "summary": "Window height",
+      "description": "Change the window height."
+    },
+    {
+      "name": "notifications",
+      "type": "b",
+      "default": "true",
+      "summary": "Notifications",
+      "description": "Show notifications."
+    },
+    {
+      "name": "show-component-updates",
+      "type": "b",
+      "default": "true",
+      "summary": "Component update suggestions",
+      "description": "Show runner and component update suggestions for bottles."
+    },
+    {
+      "name": "eagle-security-scan",
+      "type": "b",
+      "default": "true",
+      "summary": "Eagle security scan",
+      "description": "Scan executables for malware patterns before running them."
+    },
+    {
+      "name": "eagle-crash-detection",
+      "type": "b",
+      "default": "true",
+      "summary": "Eagle crash detection",
+      "description": "Offer an Eagle analysis when a program closes right after starting."
+    },
+    {
+      "name": "temp",
+      "type": "b",
+      "default": "false",
+      "summary": "Temp cleaning",
+      "description": "Clean the temp path when booting the system."
+    },
+    {
+      "name": "release-candidate",
+      "type": "b",
+      "default": "false",
+      "summary": "Release Candidate",
+      "description": "Toggle release candidate for runners."
+    },
+    {
+      "name": "startup-view",
+      "type": "s",
+      "default": "page_library",
+      "summary": "Startup view",
+      "description": "Choose which view the application should be started in."
+    },
+    {
+      "name": "experiments",
+      "type": "b",
+      "default": "false",
+      "summary": "Experiments",
+      "description": "Toggle experimental features such as versioning and installers. Release candidate for runners."
+    },
+    {
+      "name": "steam-proton-support",
+      "type": "b",
+      "default": "false",
+      "summary": "Steam Proton Support",
+      "description": "Toggle Steam Proton prefixes support."
+    },
+    {
+      "name": "auto-close-bottles",
+      "type": "b",
+      "default": "false",
+      "summary": "Automatically close Bottles",
+      "description": "Close Bottles after starting an executable from the file manager."
+    },
+    {
+      "name": "audio-driver",
+      "type": "s",
+      "default": "default",
+      "summary": "Wine audio driver",
+      "description": "Select which Wine audio driver should be enforced for all bottles. Use \"default\" to leave the driver unchanged."
+    },
+    {
+      "name": "disable-home-drive",
+      "type": "b",
+      "default": "false",
+      "summary": "Disable the default Z: drive",
+      "description": "Do not expose the filesystem as the Z: drive in new bottles."
+    },
+    {
+      "name": "show-sandbox-warning",
+      "type": "b",
+      "default": "true",
+      "summary": "Show sandbox warning",
+      "description": "Toggle sandbox warning."
+    },
+    {
+      "name": "playtime-enabled",
+      "type": "b",
+      "default": "true",
+      "summary": "Enable playtime tracking",
+      "description": "When true, Bottles records playtime telemetry to a local SQLite database. Disable to stop tracking."
+    },
+    {
+      "name": "playtime-heartbeat-interval",
+      "type": "i",
+      "default": 60,
+      "summary": "Playtime heartbeat interval (seconds)",
+      "description": "How often to update session heartbeat. Defines max timestamp error for abrupt exits."
+    },
+    {
+      "name": "eagle-scan-limit",
+      "type": "i",
+      "default": 50,
+      "summary": "Eagle deep scan limit",
+      "description": "Maximum number of binaries to scan when analysing installers. Higher values provide more thorough analysis but take longer."
+    },
+    {
+      "name": "show-funding",
+      "type": "b",
+      "default": "true",
+      "summary": "Show funding dialog",
+      "description": "Toggle the funding dialog."
+    },
+    {
+      "name": "umu-launcher-path",
+      "type": "s",
+      "default": "",
+      "summary": "UMU launcher path",
+      "description": "Use this UMU launcher instead of the system or bundled copy."
+    },
+    {
+      "name": "umu-data-path",
+      "type": "s",
+      "default": "",
+      "summary": "UMU managed data path",
+      "description": "Store Bottles-managed UMU game definitions and prefixes in this directory."
+    },
+    {
+      "name": "umu-proton",
+      "type": "s",
+      "default": "ProtoSoda",
+      "summary": "Default UMU Proton selection",
+      "description": "Proton selection used for new UMU games."
+    },
+    {
+      "name": "umu-dependency-tool",
+      "type": "s",
+      "default": "bottles",
+      "summary": "Default UMU dependency installer",
+      "description": "Choose the dependency source used for new UMU games."
+    }
+  ]
+}

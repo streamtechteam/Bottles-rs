@@ -87,26 +87,26 @@ pub fn apply(ctx: &egui::Context, dark: bool, font_scale: f64) -> Palette {
     visuals.faint_bg_color = palette.card_alt;
     visuals.hyperlink_color = palette.accent;
     visuals.selection.bg_fill = Color32::from_rgba_unmultiplied(53, 132, 228, 70);
-    visuals.selection.stroke = Stroke::new(1.0, palette.accent);
+    visuals.selection.stroke = Stroke::new(1.0_f32, palette.accent);
     visuals.widgets.noninteractive.bg_fill = palette.card;
     visuals.widgets.noninteractive.weak_bg_fill = palette.card;
-    visuals.widgets.noninteractive.bg_stroke = Stroke::new(1.0, palette.border);
-    visuals.widgets.noninteractive.fg_stroke = Stroke::new(1.0, palette.text);
+    visuals.widgets.noninteractive.bg_stroke = Stroke::new(1.0_f32, palette.border);
+    visuals.widgets.noninteractive.fg_stroke = Stroke::new(1.0_f32, palette.text);
     visuals.widgets.noninteractive.corner_radius = CornerRadius::same(8);
     visuals.widgets.inactive.bg_fill = palette.card;
     visuals.widgets.inactive.weak_bg_fill = palette.card;
-    visuals.widgets.inactive.bg_stroke = Stroke::new(1.0, palette.border);
-    visuals.widgets.inactive.fg_stroke = Stroke::new(1.0, palette.text);
+    visuals.widgets.inactive.bg_stroke = Stroke::new(1.0_f32, palette.border);
+    visuals.widgets.inactive.fg_stroke = Stroke::new(1.0_f32, palette.text);
     visuals.widgets.inactive.corner_radius = CornerRadius::same(8);
     visuals.widgets.hovered.bg_fill = palette.hover;
     visuals.widgets.hovered.weak_bg_fill = palette.hover;
-    visuals.widgets.hovered.bg_stroke = Stroke::new(1.0, palette.border);
-    visuals.widgets.hovered.fg_stroke = Stroke::new(1.0, palette.text);
+    visuals.widgets.hovered.bg_stroke = Stroke::new(1.0_f32, palette.border);
+    visuals.widgets.hovered.fg_stroke = Stroke::new(1.0_f32, palette.text);
     visuals.widgets.hovered.corner_radius = CornerRadius::same(8);
     visuals.widgets.active.bg_fill = palette.selected;
     visuals.widgets.active.weak_bg_fill = palette.selected;
-    visuals.widgets.active.bg_stroke = Stroke::new(1.0, palette.accent);
-    visuals.widgets.active.fg_stroke = Stroke::new(1.0, palette.text);
+    visuals.widgets.active.bg_stroke = Stroke::new(1.0_f32, palette.accent);
+    visuals.widgets.active.fg_stroke = Stroke::new(1.0_f32, palette.text);
     visuals.widgets.active.corner_radius = CornerRadius::same(8);
     ctx.set_visuals(visuals);
 
@@ -141,7 +141,7 @@ pub fn apply(ctx: &egui::Context, dark: bool, font_scale: f64) -> Palette {
 pub fn card_frame(palette: &Palette, radius: u8) -> Frame {
     Frame::new()
         .fill(palette.card)
-        .stroke(Stroke::new(1.0, palette.border))
+        .stroke(Stroke::new(1.0_f32, palette.border))
         .corner_radius(CornerRadius::same(radius))
         .inner_margin(Margin::same(12))
 }
@@ -214,7 +214,7 @@ pub fn secondary_button(ui: &mut Ui, palette: &Palette, label: &str) -> Response
     ui.add(
         egui::Button::new(RichText::new(label).color(palette.text))
             .fill(palette.card)
-            .stroke(Stroke::new(1.0, palette.border))
+            .stroke(Stroke::new(1.0_f32, palette.border))
             .corner_radius(CornerRadius::same(8)),
     )
 }
@@ -251,7 +251,7 @@ pub fn icon_button(ui: &mut Ui, palette: &Palette, icon: Icon, tooltip: &str) ->
 
 fn draw_icon(painter: &egui::Painter, rect: Rect, icon: Icon, color: Color32) {
     let center = rect.center();
-    let stroke = Stroke::new(1.6, color);
+    let stroke = Stroke::new(1.6_f32, color);
     match icon {
         Icon::Plus => {
             painter.line_segment(

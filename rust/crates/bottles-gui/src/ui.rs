@@ -9,7 +9,7 @@ use bottles_core::wine::WineTool;
 use bottles_core::{APP_ID, APP_NAME, APP_VERSION, DOC_URL};
 use eframe::egui::{
     self, pos2, vec2, Align, Align2, Color32, CornerRadius, FontId, Frame, Layout, Margin,
-    RichText, ScrollArea, Sense, Shape, Stroke, Ui, Vec2, ViewportCommand,
+    RichText, ScrollArea, Sense, Shape, Stroke, Ui, ViewportCommand,
 };
 use serde_yaml::Value;
 
@@ -112,7 +112,7 @@ impl BottlesApp {
                 pos2(rect.left(), rect.bottom() - 0.5),
                 pos2(rect.right(), rect.bottom() - 0.5),
             ],
-            Stroke::new(1.0, palette.border),
+            Stroke::new(1.0_f32, palette.border),
         );
         ui.add_space(7.0);
         let state = &mut self.state;
@@ -335,8 +335,9 @@ impl BottlesApp {
 
             if !state.umu_games.is_empty() {
                 theme::section_title(ui, palette, "UMU Prefixes");
+                let games = state.umu_games.clone();
                 theme::card(ui, palette, |ui| {
-                    for game in &state.umu_games {
+                    for game in &games {
                         let response =
                             theme::clickable_row(ui, palette, &game.name, &game.proton, "UMU   ›");
                         if response.clicked() {
@@ -1901,15 +1902,15 @@ fn setting_switch(ui: &mut Ui, palette: &Palette, title: &str, subtitle: &str, v
 fn bottle_context_menu(ui: &mut Ui, state: &mut AppState, name: &str) {
     let name = name.to_owned();
     if ui.button("Rename Bottle…").clicked() {
-        state.select_bottle(name);
+        state.select_bottle(name.clone());
         state.rename_dialog = true;
     }
     if ui.button("Duplicate Bottle…").clicked() {
-        state.select_bottle(name);
+        state.select_bottle(name.clone());
         state.duplicate_dialog = true;
     }
     if ui.button("Delete Bottle…").clicked() {
-        state.select_bottle(name);
+        state.select_bottle(name.clone());
         state.delete_dialog = true;
     }
 }

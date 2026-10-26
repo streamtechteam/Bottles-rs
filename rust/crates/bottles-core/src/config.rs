@@ -674,7 +674,7 @@ fn legacy_inherited_environments() -> Vec<Vec<&'static str>> {
         "XDG_RUNTIME_DIR",
     ];
     let mut full = legacy_base.clone();
-    full.insert(8, "MANGOHUD_CONFIG");
+    full.insert(7, "MANGOHUD_CONFIG");
     let mut result = vec![legacy_base.clone(), full.clone()];
     for base in [legacy_base, full] {
         let mut with_modifiers = base.clone();
@@ -790,7 +790,7 @@ mod tests {
 
     #[test]
     fn field_lists_match_python_contract() {
-        let contract = contracts().config_fields;
+        let contract = &contracts().config_fields;
         let actual: Vec<String> = contract
             .bottle_config
             .iter()

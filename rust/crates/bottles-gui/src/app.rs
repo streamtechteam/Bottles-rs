@@ -627,7 +627,7 @@ impl BottlesApp {
                 labeled_text(ui, "Name", &mut self.state.new_bottle_name);
                 ui.horizontal(|ui| {
                     ui.label("Environment");
-                    egui::ComboBox::from_id_source("new-environment")
+                    egui::ComboBox::from_id_salt("new-environment")
                         .selected_text(&self.state.new_bottle_environment)
                         .show_ui(ui, |ui| {
                             for value in ["gaming", "application", "custom"] {
@@ -641,7 +641,7 @@ impl BottlesApp {
                 });
                 ui.horizontal(|ui| {
                     ui.label("Architecture");
-                    egui::ComboBox::from_id_source("new-arch")
+                    egui::ComboBox::from_id_salt("new-arch")
                         .selected_text(&self.state.new_bottle_arch)
                         .show_ui(ui, |ui| {
                             for value in ["win64", "win32"] {
@@ -912,7 +912,7 @@ impl BottlesApp {
         ui.heading("Journal");
         ui.horizontal(|ui| {
             ui.label("Period");
-            egui::ComboBox::from_id_source("journal-period")
+            egui::ComboBox::from_id_salt("journal-period")
                 .selected_text(period_label(self.state.journal_period))
                 .show_ui(ui, |ui| {
                     for (label, period) in [
@@ -1028,7 +1028,7 @@ impl BottlesApp {
                 .map(|status| status.label())
                 .unwrap_or("all statuses")
                 .to_owned();
-            egui::ComboBox::from_id_source("parity-status")
+            egui::ComboBox::from_id_salt("parity-status")
                 .selected_text(selected)
                 .show_ui(ui, |ui| {
                     ui.selectable_value(&mut self.state.parity_status, None, "all statuses");

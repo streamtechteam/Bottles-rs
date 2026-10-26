@@ -1,5 +1,5 @@
 use crate::error::Result;
-use crate::paths::{is_official_package, Paths, ToolAvailability, APP_VERSION};
+use crate::paths::{is_official_package, ToolAvailability, APP_VERSION};
 use serde_json::{json, Value};
 use std::collections::BTreeMap;
 use std::fs;

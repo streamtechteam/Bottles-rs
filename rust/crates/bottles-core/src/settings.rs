@@ -1,5 +1,4 @@
 use crate::error::{IoResultExt, Result};
-use crate::parity::contracts;
 use crate::paths::{Paths, APP_ID};
 use serde::{Deserialize, Serialize};
 use serde_yaml::Value;
@@ -533,7 +532,7 @@ mod tests {
 
     #[test]
     fn setting_keys_match_python_schema() {
-        let contract = contracts().settings.keys.clone();
+        let contract = crate::parity::contracts().settings.keys.clone();
         let actual: Vec<String> = contract.iter().map(|key| key.name.clone()).collect();
         assert_eq!(actual, SETTING_KEYS);
     }

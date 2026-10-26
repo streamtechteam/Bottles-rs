@@ -51,7 +51,7 @@ impl RegistryRuleManager {
             Some(names) if !names.is_empty() => names
                 .iter()
                 .filter_map(|name| rules.get(name).cloned())
-                .collect(),
+                .collect::<Vec<RegistryRule>>(),
             _ => rules.into_values().collect(),
         }
         .into_iter()
@@ -65,7 +65,7 @@ impl RegistryRuleManager {
             }
             None => true,
         })
-        .collect();
+        .collect::<Vec<RegistryRule>>();
 
         fs::create_dir_all(&paths.temp).with_path(&paths.temp)?;
         let launcher = WineLauncher::new(paths.clone(), config.clone(), prefix.to_path_buf());

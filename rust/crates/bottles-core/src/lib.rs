@@ -22,7 +22,7 @@ pub mod wine;
 pub use config::{BottleConfig, BottleParams, BottleSandboxParams, ExternalProgram, RegistryRule};
 pub use error::{BottlesError, Result};
 pub use manager::{Bottle, BottleManager};
-pub use paths::{Paths, APP_ID, APP_NAME, APP_VERSION};
+pub use paths::{Paths, APP_ID, APP_NAME, APP_VERSION, DOC_URL};
 
 /// CLI commands generated from `bottles/frontend/cli/cli.py`.
 pub const CLI_COMMANDS: &[&str] = &[

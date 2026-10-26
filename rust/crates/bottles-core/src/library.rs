@@ -74,7 +74,7 @@ impl Library {
             .to_owned()
     }
 
-    pub fn add(&mut self, mut entry: Mapping) -> Result<String> {
+    pub fn add(&mut self, entry: Mapping) -> Result<String> {
         let id_value = entry
             .get(&Value::String("id".to_owned()))
             .and_then(Value::as_str)

@@ -1,9 +1,7 @@
-use bottles_core::config::{RegistryRule, DEFAULT_INHERITED_ENVIRONMENT};
+use bottles_core::config::RegistryRule;
 use bottles_core::error::{BottlesError, Result};
 use bottles_core::health::HealthChecker;
-use bottles_core::journal::{JournalPeriod, JournalSeverity};
-use bottles_core::manager::{bottle_prefix_path, NewBottleOptions};
-use bottles_core::parity;
+use bottles_core::manager::NewBottleOptions;
 use bottles_core::registry_rules::RegistryRuleManager;
 use bottles_core::settings::AppSettings;
 use bottles_core::umu::{UmuGame, UmuRepository, DEFAULT_PROTON_VALUE};
@@ -1363,6 +1361,6 @@ mod tests {
 
     #[test]
     fn parity_inventory_is_embedded() {
-        assert!(parity::inventory().len() > 350);
+        assert!(bottles_core::parity::inventory().len() > 350);
     }
 }

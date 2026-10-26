@@ -25,6 +25,38 @@ permissions:
   contents: read
 
 jobs:
+  format-and-vendor:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
+      - name: Format and bundle dependencies
+        working-directory: rust
+        run: |
+          cargo fmt --all
+          cargo generate-lockfile
+          cargo vendor --versioned-dirs vendor > /tmp/vendor-config.toml
+          tar -czf vendor-bundle.tar.gz vendor Cargo.lock
+      - name: Commit generated formatting and offline bundle
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add rust/Cargo.toml rust/Cargo.lock rust/crates rust/contracts rust/scripts rust/README.md rust/PARITY.md
+          git add -f rust/vendor-bundle.tar.gz
+          if git diff --cached --quiet; then
+            echo "No formatting or dependency changes"
+          else
+            git commit -m "chore: format Rust sources and cache vendored crates [skip ci]"
+            git push origin HEAD:${{ github.ref_name }}
+          fi
+
   verify:
     runs-on: ubuntu-latest
     steps:

@@ -1,4 +1,4 @@
-name: Rust rewrite CI
+name: Rust rewrite CI and build
 
 on:
   push:
@@ -23,6 +23,9 @@ on:
 
 permissions:
   contents: read
+
+env:
+  CARGO_TERM_COLOR: always
 
 jobs:
   verify:
@@ -59,10 +62,29 @@ jobs:
         run: cargo fmt --all -- --check
       - name: Clippy
         working-directory: rust
-        run: cargo clippy --workspace --all-targets
+        run: cargo clippy --locked --workspace --all-targets
       - name: Core and CLI tests
         working-directory: rust
-        run: cargo test -p bottles-core -p bottles-cli
+        run: cargo test --locked -p bottles-core -p bottles-cli
       - name: Check egui application
         working-directory: rust
-        run: cargo check -p bottles-gui --all-targets
+        run: cargo check --locked -p bottles-gui --all-targets
+      - name: Build release binaries
+        working-directory: rust
+        run: cargo build --locked --release --workspace
+      - name: Package Linux binaries
+        run: |
+          mkdir -p dist
+          tar -czf dist/bottles-rs-linux-x86_64.tar.gz \
+            -C rust/target/release bottles bottles-cli
+          sha256sum dist/bottles-rs-linux-x86_64.tar.gz \
+            > dist/bottles-rs-linux-x86_64.tar.gz.sha256
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: bottles-rs-linux-x86_64
+          path: |
+            dist/bottles-rs-linux-x86_64.tar.gz
+            dist/bottles-rs-linux-x86_64.tar.gz.sha256
+          if-no-files-found: error
+          retention-days: 14

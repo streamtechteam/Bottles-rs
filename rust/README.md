@@ -40,7 +40,10 @@ Run:
 ```
 
 On a Linux desktop, `eframe` needs the usual X11/Wayland/OpenGL development
-libraries. The CI workflow installs them for Debian/Ubuntu.
+libraries. The CI workflow installs them for Debian/Ubuntu, builds both release
+binaries with `cargo build --locked --release --workspace`, and uploads a
+`bottles-rs-linux-x86_64` artifact containing `bottles`, `bottles-cli`, and a
+SHA-256 checksum.
 
 ## Data compatibility
 
